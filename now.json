@@ -1,0 +1,5 @@
+{
+  "env": {
+    "AIRTABLE_TOKEN": "@airtable_token"
+  }
+}
