@@ -28,9 +28,9 @@ const style = (<style>{`
 </style>)
 
 export default ({talk}) => (
-  <Card title={months[new Date(talk.date).getMonth()]} state="valid">
-    <div>{days[new Date(talk.date).getDay() - 1]} {new Date(talk.date).getDate()}</div>
-    <div>{talk.name || 'TBD'}</div>
+  <Card title={talk.date ? months[new Date(talk.date).getMonth()] : talk.name} state="valid">
+    {talk.date ? <div>{days[new Date(talk.date).getDay() - 1]} {new Date(talk.date).getDate()}</div> : ''}
+    {talk.date ? <div>{talk.name || 'TBD'}</div> : ''}
     <ul>{talk.speakers.map(({name}) => (<li key={name}>{name}</li>))}</ul>
 
     <style jsx>{`
@@ -51,17 +51,3 @@ export default ({talk}) => (
     `}</style>
   </Card>
 )
-
-  // talk
-  //   ? (<li className='talk filled'>
-  //       {style}
-  //       <h2>{months[new Date(talk.date).getMonth()]}</h2>
-  //       <div>{days[new Date(talk.date).getDay() - 1]} {new Date(talk.date).getDate()}</div>
-  //       <div>{talk.name || 'TBD'}</div>
-  //       <ul>{talk.speakers.map(({name}) => (<li key={name}>{name}</li>))}</ul>
-  //     </li>)
-  //   : (<li className='talk pending'>
-  //       {style}
-  //       <h2>{months[month]}</h2>
-  //       <div>Pending</div>
-  //     </li>)

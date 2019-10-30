@@ -7,7 +7,7 @@ const fetch = endpoint => unfetch(`https://api.airtable.com/v0/appAcSNaTeutPmqP0
 
 
 const talks = () => Promise.all([
-  fetch('/talk'),
+  fetch('/talk?filterByFormula=IF(date = BLANK(), 1, IS_AFTER(date, DATEADD(NOW(), -1, \'months\')))'),
   fetch('/speaker')
 ]).then(([talks, speakers]) =>
   talks.map(talk => ({
