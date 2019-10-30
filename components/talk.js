@@ -7,12 +7,7 @@ const style = (<style>{`
       padding: 1rem;
       border-radius: 0.2rem;
     }
-
-    h2 {
-      font-size: 1rem;
-      margin-top: 0;
-    }
-
+    
     div ~ div, div ~ ul {
       margin-top: 0.75rem;
     }

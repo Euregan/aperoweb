@@ -3,7 +3,7 @@ import days from '../utilities/days'
 
 export default ({title, id, state, children}) => (
   <div className={'card ' + state} id={id}>
-    <h3>{title}</h3>
+    {title ? <h3>{title}</h3> : ''}
     <div className="body">
       {children}
     </div>

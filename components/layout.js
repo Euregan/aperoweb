@@ -17,6 +17,11 @@ const Layout = props => (
             max-width: 1080px;
           }
 
+          h2 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+          }
+
           h1, h2, a {
             color: #87a8d0;
           }
