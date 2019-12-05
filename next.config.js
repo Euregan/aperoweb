@@ -25,7 +25,4 @@ module.exports = withCss({
         }
         return config;
     },
-    env: {
-        AIRTABLE_TOKEN: process.env.AIRTABLE_TOKEN,
-    },
 });

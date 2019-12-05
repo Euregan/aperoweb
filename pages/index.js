@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { formatDistance, format } from 'date-fns';
 
 import useDataApi from '../lib/useDataApi';
+import useAuthentication from '../lib/useAuthentication';
 import Layout from '../components/Layout';
 import Card, { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
@@ -118,5 +119,10 @@ const Home = () => (
         </Grid>
     </Layout>
 );
+
+Home.getInitialProps = async ({ req, res }) => {
+    const securitySettings = useAuthentication(req, res);
+    return securitySettings;
+};
 
 export default Home;
