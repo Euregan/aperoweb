@@ -4,7 +4,7 @@ import { Menu } from 'antd'
 import { useRouter } from 'next/router'
 
 const links = [
-  { href: '/', label: 'Home' },
+  { href: '/', label: 'Dashboard' },
   { href: '/talks', label: 'Talks' },
 ]
 
@@ -12,8 +12,7 @@ const urlToKey = url => {
   switch (url) {
     case '/talks': return 'talks'
     case '/':
-    default:
-       return 'home'
+    default: return 'dashboard'
   }
 }
 
