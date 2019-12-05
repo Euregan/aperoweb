@@ -71,16 +71,6 @@ const Home = () => {
       <Grid>
         {nextTweetCard}
       </Grid>
-
-      <style jsx>{`
-        ul {
-          padding: 0;
-        }
-
-        #plannedTalks li ~ li {
-          margin-top: 0.5rem;
-        }
-      `}</style>
     </Layout>
   )
 }

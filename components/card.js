@@ -1,44 +1,27 @@
-import months from '../utilities/months'
-import days from '../utilities/days'
+import { Card, Icon } from 'antd'
+import { blue, green, orange, red } from '@ant-design/colors'
 
-export default ({title, id, state, children}) => (
-  <div className={'card ' + state} id={id}>
-    {title ? <h3>{title}</h3> : ''}
-    <div className="body">
-      {children}
-    </div>
 
-    <style jsx>{`
-        .card {
-          padding: 1rem;
-          border-radius: 0.2rem;
-          border: 1px solid #EAEAEA;
-        }
+const stateToIcon = state => {
+  switch (state) {
+    case 'pending': return 'question-circle'
+    case 'valid': return 'check-circle'
+    case 'warning': return 'exclamation-circle'
+    case 'error': return 'warning'
+  }
+}
 
-        .card.valid {
-          background-color: #BBEAA6;
-          border: none;
-        }
+const stateToColor = state => {
+  switch (state) {
+    case 'pending': return blue.primary
+    case 'valid': return green.primary
+    case 'warning': return orange.primary
+    case 'error': return red.primary
+  }
+}
 
-        .card.pending {
-          background-color: #DAF1F9;
-          border: none;
-        }
-
-        .card.error {
-          background-color: #FF8080;
-          border: none;
-        }
-
-        .card.warning {
-          background-color: #FFBA92;
-          border: none;
-        }
-    `}</style>
-    <style jsx global>{`
-      .card > .body > * ~ * {
-        margin-top: 0.75rem;
-      }
-    `}</style>
-  </div>
+export default ({title, id, state, className, children}) => (
+  <Card id={id} title={title} className={className} extra={state ? <Icon type={stateToIcon(state)} theme="twoTone" twoToneColor={stateToColor(state)}/> : ''}>
+    {children}
+  </Card>
 )

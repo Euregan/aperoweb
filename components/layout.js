@@ -1,57 +1,51 @@
 import Head from 'next/head'
 import Nav from './nav'
+import { Layout } from 'antd'
 
+const { Header, Content } = Layout
 
-const Layout = props => (
+export default ({children}) => (
   <div>
     <Head>
       <title>Apéros Web</title>
       <link rel='icon' href='/favicon.ico' />
+
       <style>{`
-          * {
-            font-family: sans-serif;
-          }
+        .ant-layout-content {
+          padding: 0 2rem !important;
+        }
 
-          #page {
-            margin: auto;
-            max-width: 1080px;
-          }
+        .ant-layout-header {
+          height: auto !important;
+          padding: 0 !important;
+        }
 
-          h2 {
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-          }
+        .ant-card .ant-card-body > * ~ * {
+          margin-top: 0.5rem;
+        }
 
-          h1, h2, a {
-            color: #87a8d0;
-          }
+        h2 {
+          margin-top: 1rem !important;
+        }
 
-          a {
-            text-decoration: none;
-          }
+        ul {
+          list-style: none;
+          padding: 0;
+        }
 
-          h3 {
-            font-size: 1rem;
-            margin-top: 0;
-          }
-
-          ul {
-            padding: 0;
-          }
-
-          li {
-            list-style: none;
-          }
-        `}
-      </style>
+        body {
+          background-color: #f0f2f5 !important;
+        }
+      `}</style>
     </Head>
 
-    <div id="page">
-      <Nav />
-
-      {props.children}
-    </div>
+    <Layout id="page">
+      <Header>
+        <Nav />
+      </Header>
+      <Content>
+        {children}
+      </Content>
+    </Layout>
   </div>
 )
-
-export default Layout
