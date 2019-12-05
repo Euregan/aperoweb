@@ -1,47 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
+import { Menu } from 'antd'
+import { useRouter } from 'next/router'
 
 const links = [
+  { href: '/', label: 'Home' },
   { href: '/talks', label: 'Talks' },
-].map(link => ({
-  ...link,
-  key: `nav-link-${link.href}-${link.label}`
-}))
+]
 
-const Nav = () => (
-  <nav>
-    <ul>
-      <li>
-        <Link href='/'>
-          <a>Home</a>
-        </Link>
-      </li>
-      {links.map(({ key, href, label }) => (
-        <li key={key}>
-          <Link href={href}>{label}</Link>
-        </li>
+const urlToKey = url => {
+  switch (url) {
+    case '/talks': return 'talks'
+    case '/':
+    default:
+       return 'home'
+  }
+}
+
+const Nav = () => {
+  const router = useRouter()
+  const [current, setCurrent] = useState(urlToKey(router.pathname))
+
+  return (
+    <Menu mode="horizontal" selectedKeys={current}>
+      {links.map(({ href, label }) => (
+        <Menu.Item key={urlToKey(href)} onClick={() => setCurrent(urlToKey(href))}>
+          <Link href={href}><a>{label}</a></Link>
+        </Menu.Item>
       ))}
-    </ul>
-
-    <style jsx>{`
-      nav {
-        text-align: center;
-      }
-
-      ul {
-        display: flex;
-        justify-content: space-start;
-      }
-
-      li ~ li {
-        margin-left: 1rem;
-      }
-
-      a {
-        font-size: 1rem;
-      }
-    `}</style>
-  </nav>
-)
+    </Menu>
+  )
+}
 
 export default Nav
