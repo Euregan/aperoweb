@@ -54,9 +54,9 @@ const Home = () => {
 
   const nextTweetCard = nextTweet === 'loading'
     ? <LoadingCard title="Next tweet" lines={3}/>
-    : <Card title="Next tweet">
-        <div>{DateTime.fromISO(nextTweet.date).toRelative()}</div>
-        <div>{nextTweet.talk.name}</div>
+    : <Card title="Next tweet" state={nextTweet ? '' : 'error'}>
+        <div>{nextTweet ? DateTime.fromISO(nextTweet.date).toRelative() : 'No tweet has been prepared!'}</div>
+        <div>{nextTweet ? nextTweet.talk.name : ''}</div>
       </Card>
 
   return (
