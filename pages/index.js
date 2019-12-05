@@ -49,7 +49,10 @@ const Home = () => {
   const nextEmptyMonthCard = talks === 'loading'
     ? <LoadingCard title="Next empty month" lines={2}/>
     : <Card id="nextEmptyMonth" title="Next empty month">
-        {months[talks.indexOf(null) + new Date().getMonth() % 12]}
+        {months[talks.reduce((lastMonth, talk) =>
+          new Date(talk.date).getMonth() === (lastMonth + 1) % 12 ? (lastMonth + 1) % 12 : lastMonth,
+          new Date().getMonth() - 1
+        ) + 1]}
       </Card>
 
   const nextTweetCard = nextTweet === 'loading'
