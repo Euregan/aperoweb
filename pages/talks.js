@@ -15,16 +15,19 @@ const Talks = () => {
     const talks = fetch('/talks')
       .catch(error => console.error(error) || [])
 
-    talks.then(talks => talks.reduce((calendar, talk) => {
-        const talkMonth = new Date(talk.date).getMonth()
-        const currentMonth = new Date().getMonth()
-        const index = talkMonth >= currentMonth
-          ? talkMonth - currentMonth
-          : 12 - currentMonth + talkMonth
-        calendar[index] = talk
-        return calendar
-      }, [null, null, null, null, null, null, null, null, null, null, null, null])
-    ).then(talks => setCalendar(talks))
+    talks
+      .then(talks => talks.filter(talk => new Date(talk.date) > new Date))
+      .then(talks => talks.reduce((calendar, talk) => {
+          const talkMonth = new Date(talk.date).getMonth()
+          const currentMonth = new Date().getMonth()
+          const index = talkMonth >= currentMonth
+            ? talkMonth - currentMonth
+            : 12 - currentMonth + talkMonth
+          calendar[index] = talk
+          return calendar
+        }, [null, null, null, null, null, null, null, null, null, null, null, null])
+      )
+      .then(talks => setCalendar(talks))
 
     talks.then(talks => setNoDate(talks.filter(talk => !talk.date)))
   }
