@@ -4,27 +4,42 @@ import PropTypes from 'prop-types';
 import { months, days } from '../lib/date';
 import Card from './Card';
 
-const Talk = ({ talk }) => (
-    <Card
-        className="talk"
-        title={talk.date ? months[new Date(talk.date).getMonth()] : talk.name}
-        state={talk.date ? 'valid' : 'pending'}
-    >
-        {talk.date ? (
-            <div className="date">
-                {days[new Date(talk.date).getDay() - 1]} {new Date(talk.date).getDate()}
-            </div>
-        ) : (
-            ''
-        )}
-        {talk.date ? <div className="name">{talk.name || 'TBD'}</div> : ''}
-        <ul className="speakers">
-            {talk.speakers.map(({ name }) => (
-                <li key={name}>{name}</li>
-            ))}
-        </ul>
-    </Card>
-);
+const Talk = ({ talk }) => {
+    if (talk.date) {
+        return (
+            <Card
+                className="talk"
+                title={months[new Date(talk.date).getMonth()]} // todo find better way
+                state="valid"
+            >
+                <div className="date">
+                    {days[new Date(talk.date).getDay() - 1]} {new Date(talk.date).getDate()}{' '}
+                    {/* todo find better way */}
+                </div>
+                <div className="name">{talk.name || 'TBD'}</div> {/* todo How it's possible? */}
+                <ul className="speakers">
+                    {talk.speakers.map((
+                        { name }, // todo speakers can be never be null?
+                    ) => (
+                        <li key={name}>{name}</li>
+                    ))}
+                </ul>
+            </Card>
+        );
+    }
+
+    return (
+        <Card className="talk" title={talk.name} state={'pending'}>
+            <ul className="speakers">
+                {talk.speakers.map((
+                    { name }, // todo speakers can be never be null?
+                ) => (
+                    <li key={name}>{name}</li>
+                ))}
+            </ul>
+        </Card>
+    );
+};
 
 Talk.propTypes = {
     talk: PropTypes.shape({
