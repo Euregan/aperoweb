@@ -1,5 +1,11 @@
-import { Card } from 'antd'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Card } from 'antd';
 
-export default ({title}) =>
-  <Card title={title} loading={true}>
-  </Card>
+const LoadingCard = ({ title }) => <Card title={title} loading={true}></Card>;
+
+LoadingCard.propTypes = {
+    title: PropTypes.string.isRequired,
+};
+
+export default LoadingCard;

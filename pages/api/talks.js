@@ -1,15 +1,15 @@
-import { talks } from '../../serverside/airtable'
+import { talks } from '../../serverside/airtable';
 
 export default async (req, res) => {
-  res.setHeader('Content-Type', 'application/json')
+    res.setHeader('Content-Type', 'application/json');
 
-  talks()
-    .then(talks => {
-      res.statusCode = 200
-      res.end(JSON.stringify(talks))
-    })
-    .catch(error => {
-      res.statusCode = 500
-      res.end(JSON.stringify(error))
-    })
-}
+    talks()
+        .then(talks => {
+            res.statusCode = 200;
+            res.end(JSON.stringify(talks));
+        })
+        .catch(error => {
+            res.statusCode = 500;
+            res.end(JSON.stringify(error));
+        });
+};

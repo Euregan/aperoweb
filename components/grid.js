@@ -1,8 +1,12 @@
-const Grid = ({children, id}) => (
-  <div className="grid" id={id}>
-    {children}
+import React from 'react';
+import PropTypes from 'prop-types';
 
-    <style>{`
+const Grid = ({ children, id }) => (
+    <div className="grid" id={id}>
+        {children}
+
+        <style>
+            {`
         .grid {
           display: grid;
           grid-template-columns: repeat(6, 1fr);
@@ -10,8 +14,13 @@ const Grid = ({children, id}) => (
           row-gap: 0.5rem;
         }
       `}
-    </style>
-  </div>
-)
+        </style>
+    </div>
+);
 
-export default Grid
+Grid.propTypes = {
+    children: PropTypes.element.isRequired,
+    id: PropTypes.string.isRequired,
+};
+
+export default Grid;

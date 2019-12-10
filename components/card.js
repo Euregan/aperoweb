@@ -1,27 +1,65 @@
-import { Card, Icon } from 'antd'
-import { blue, green, orange, red } from '@ant-design/colors'
-
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Card, Icon } from 'antd';
+import { blue, green, orange, red } from '@ant-design/colors';
 
 const stateToIcon = state => {
-  switch (state) {
-    case 'pending': return 'question-circle'
-    case 'valid': return 'check-circle'
-    case 'warning': return 'exclamation-circle'
-    case 'error': return 'warning'
-  }
-}
+    switch (state) {
+        case 'pending':
+            return 'question-circle';
+        case 'valid':
+            return 'check-circle';
+        case 'warning':
+            return 'exclamation-circle';
+        case 'error':
+            return 'warning';
+    }
+};
 
 const stateToColor = state => {
-  switch (state) {
-    case 'pending': return blue.primary
-    case 'valid': return green.primary
-    case 'warning': return orange.primary
-    case 'error': return red.primary
-  }
-}
+    switch (state) {
+        case 'pending':
+            return blue.primary;
+        case 'valid':
+            return green.primary;
+        case 'warning':
+            return orange.primary;
+        case 'error':
+            return red.primary;
+    }
+};
 
-export default ({title, id, state, className, children}) => (
-  <Card id={id} title={title} className={className} extra={state ? <Icon type={stateToIcon(state)} theme="twoTone" twoToneColor={stateToColor(state)}/> : ''}>
-    {children}
-  </Card>
-)
+const CustomCard = ({ title, id, state, className, children }) => (
+    <Card
+        id={id}
+        title={title}
+        className={className}
+        extra={
+            state ? (
+                <Icon
+                    type={stateToIcon(state)}
+                    theme="twoTone"
+                    twoToneColor={stateToColor(state)}
+                />
+            ) : (
+                ''
+            )
+        }
+    >
+        {children}
+    </Card>
+);
+
+CustomCard.propTypes = {
+    title: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    children: PropTypes.element.isRequired,
+};
+
+CustomCard.defaultProps = {
+    className: '',
+};
+
+export default CustomCard;

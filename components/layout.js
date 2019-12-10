@@ -1,16 +1,19 @@
-import Head from 'next/head'
-import Nav from './nav'
-import { Layout } from 'antd'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Head from 'next/head';
+import { Layout } from 'antd';
 
-const { Header, Content } = Layout
+import Nav from './nav';
 
-export default ({children}) => (
-  <div>
-    <Head>
-      <title>Apéros Web</title>
-      <link rel='icon' href='/favicon.ico' />
+const { Header, Content } = Layout;
 
-      <style>{`
+const CustomLayout = ({ children }) => (
+    <div>
+        <Head>
+            <title>Apéros Web</title>
+            <link rel="icon" href="/favicon.ico" />
+
+            <style>{`
         .ant-layout-content {
           padding: 0 2rem !important;
         }
@@ -37,15 +40,19 @@ export default ({children}) => (
           background-color: #f0f2f5 !important;
         }
       `}</style>
-    </Head>
+        </Head>
 
-    <Layout id="page">
-      <Header>
-        <Nav />
-      </Header>
-      <Content>
-        {children}
-      </Content>
-    </Layout>
-  </div>
-)
+        <Layout id="page">
+            <Header>
+                <Nav />
+            </Header>
+            <Content>{children}</Content>
+        </Layout>
+    </div>
+);
+
+CustomLayout.propTypes = {
+    children: PropTypes.element.isRequired,
+};
+
+export default CustomLayout;
