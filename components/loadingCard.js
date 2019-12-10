@@ -5,7 +5,11 @@ import { Card } from 'antd';
 const LoadingCard = ({ title }) => <Card title={title} loading={true}></Card>;
 
 LoadingCard.propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
+};
+
+LoadingCard.defaultTypes = {
+    title: '',
 };
 
 export default LoadingCard;

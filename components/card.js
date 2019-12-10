@@ -29,9 +29,8 @@ const stateToColor = state => {
     }
 };
 
-const CustomCard = ({ title, id, state, className, children }) => (
+const CustomCard = ({ title, state, className, children }) => (
     <Card
-        id={id}
         title={title}
         className={className}
         extra={
@@ -52,14 +51,14 @@ const CustomCard = ({ title, id, state, className, children }) => (
 
 CustomCard.propTypes = {
     title: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    state: PropTypes.string.isRequired,
+    state: PropTypes.string,
     className: PropTypes.string,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 CustomCard.defaultProps = {
-    className: '',
+    className: null,
+    state: null,
 };
 
 export default CustomCard;

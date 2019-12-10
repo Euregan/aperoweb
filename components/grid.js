@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Grid = ({ children, id }) => (
-    <div className="grid" id={id}>
+const Grid = ({ children }) => (
+    <div className="grid">
         {children}
 
         <style>
@@ -19,8 +19,7 @@ const Grid = ({ children, id }) => (
 );
 
 Grid.propTypes = {
-    children: PropTypes.element.isRequired,
-    id: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 export default Grid;
