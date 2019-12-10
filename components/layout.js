@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Head from 'next/head';
-import Nav from './nav';
 import { Layout } from 'antd';
+
+import Nav from './nav';
 
 const { Header, Content } = Layout;
 
@@ -48,5 +50,9 @@ const CustomLayout = ({ children }) => (
         </Layout>
     </div>
 );
+
+CustomLayout.propTypes = {
+    children: PropTypes.element.isRequired,
+};
 
 export default CustomLayout;

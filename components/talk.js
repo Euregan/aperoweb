@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import months from '../utilities/months';
 import days from '../utilities/days';
@@ -25,5 +26,17 @@ const Talk = ({ talk }) => (
         </ul>
     </Card>
 );
+
+Talk.propTypes = {
+    talk: PropTypes.shape({
+        name: PropTypes.string,
+        date: PropTypes.string,
+        speakers: PropTypes.arrayOf(
+            PropTypes.shape({
+                name: PropTypes.string,
+            }),
+        ),
+    }).isRequired,
+};
 
 export default Talk;

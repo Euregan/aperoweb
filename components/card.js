@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card, Icon } from 'antd';
 import { blue, green, orange, red } from '@ant-design/colors';
 
@@ -48,5 +49,17 @@ const CustomCard = ({ title, id, state, className, children }) => (
         {children}
     </Card>
 );
+
+CustomCard.propTypes = {
+    title: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    children: PropTypes.element.isRequired,
+};
+
+CustomCard.defaultProps = {
+    className: '',
+};
 
 export default CustomCard;
