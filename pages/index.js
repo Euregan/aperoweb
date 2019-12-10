@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { DateTime } from 'luxon';
 import fetch from '../frontside/fetch';
 import Layout from '../components/layout';
-import Talk from '../components/talk';
 import Card from '../components/card';
 import Grid from '../components/grid';
 import LoadingCard from '../components/loadingCard';
@@ -41,7 +40,7 @@ const Home = () => {
                 <div>{nextTalk.name}</div>
                 <ul>
                     {nextTalk.speakers.map(speaker => (
-                        <li>{speaker.name}</li>
+                        <li key={speaker.name}>{speaker.name}</li>
                     ))}
                 </ul>
             </Card>
@@ -55,7 +54,7 @@ const Home = () => {
                 {talks
                     .filter(talk => talk && talk.date)
                     .map(talk => (
-                        <div>{talk.name}</div>
+                        <div key={talk.name}>{talk.name}</div>
                     ))}
             </Card>
         );

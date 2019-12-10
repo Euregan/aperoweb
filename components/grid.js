@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Grid = ({ children, id }) => (
     <div className="grid" id={id}>
         {children}

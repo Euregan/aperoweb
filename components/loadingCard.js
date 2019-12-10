@@ -1,3 +1,6 @@
+import React from 'react';
 import { Card } from 'antd';
 
-export default ({ title }) => <Card title={title} loading={true}></Card>;
+const LoadingCard = ({ title }) => <Card title={title} loading={true}></Card>;
+
+export default LoadingCard;

@@ -1,8 +1,10 @@
+import React from 'react';
+
 import months from '../utilities/months';
 import days from '../utilities/days';
 import Card from '../components/card';
 
-export default ({ talk }) => (
+const Talk = ({ talk }) => (
     <Card
         className="talk"
         title={talk.date ? months[new Date(talk.date).getMonth()] : talk.name}
@@ -23,3 +25,5 @@ export default ({ talk }) => (
         </ul>
     </Card>
 );
+
+export default Talk;

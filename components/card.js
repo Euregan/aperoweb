@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, Icon } from 'antd';
 import { blue, green, orange, red } from '@ant-design/colors';
 
@@ -27,7 +28,7 @@ const stateToColor = state => {
     }
 };
 
-export default ({ title, id, state, className, children }) => (
+const CustomCard = ({ title, id, state, className, children }) => (
     <Card
         id={id}
         title={title}
@@ -47,3 +48,5 @@ export default ({ title, id, state, className, children }) => (
         {children}
     </Card>
 );
+
+export default CustomCard;

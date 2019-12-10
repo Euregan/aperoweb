@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import fetch from '../frontside/fetch';
 import Layout from '../components/layout';
 import Talk from '../components/talk';
@@ -37,8 +37,12 @@ const Talks = () => {
     }
 
     const loadingCalendar = [...Array(6).keys()]
-        .map(() => <LoadingCard lines={5} />)
-        .concat([...Array(6).keys()].map(() => <LoadingCard lines={3} />));
+        .map((_, index) => <LoadingCard key={`LoadingCard${index}`} lines={5} />)
+        .concat(
+            [...Array(6).keys()].map((_, index) => (
+                <LoadingCard key={`LoadingCardConcat${index}`} lines={3} />
+            )),
+        );
 
     return (
         <div>

@@ -1,10 +1,11 @@
+import React from 'react';
 import Head from 'next/head';
 import Nav from './nav';
 import { Layout } from 'antd';
 
 const { Header, Content } = Layout;
 
-export default ({ children }) => (
+const CustomLayout = ({ children }) => (
     <div>
         <Head>
             <title>Apéros Web</title>
@@ -47,3 +48,5 @@ export default ({ children }) => (
         </Layout>
     </div>
 );
+
+export default CustomLayout;
