@@ -1,16 +1,16 @@
-import Head from 'next/head'
-import Nav from './nav'
-import { Layout } from 'antd'
+import Head from 'next/head';
+import Nav from './nav';
+import { Layout } from 'antd';
 
-const { Header, Content } = Layout
+const { Header, Content } = Layout;
 
-export default ({children}) => (
-  <div>
-    <Head>
-      <title>Apéros Web</title>
-      <link rel='icon' href='/favicon.ico' />
+export default ({ children }) => (
+    <div>
+        <Head>
+            <title>Apéros Web</title>
+            <link rel="icon" href="/favicon.ico" />
 
-      <style>{`
+            <style>{`
         .ant-layout-content {
           padding: 0 2rem !important;
         }
@@ -37,15 +37,13 @@ export default ({children}) => (
           background-color: #f0f2f5 !important;
         }
       `}</style>
-    </Head>
+        </Head>
 
-    <Layout id="page">
-      <Header>
-        <Nav />
-      </Header>
-      <Content>
-        {children}
-      </Content>
-    </Layout>
-  </div>
-)
+        <Layout id="page">
+            <Header>
+                <Nav />
+            </Header>
+            <Content>{children}</Content>
+        </Layout>
+    </div>
+);

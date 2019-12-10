@@ -1,8 +1,9 @@
-const Grid = ({children, id}) => (
-  <div className="grid" id={id}>
-    {children}
+const Grid = ({ children, id }) => (
+    <div className="grid" id={id}>
+        {children}
 
-    <style>{`
+        <style>
+            {`
         .grid {
           display: grid;
           grid-template-columns: repeat(6, 1fr);
@@ -10,8 +11,8 @@ const Grid = ({children, id}) => (
           row-gap: 0.5rem;
         }
       `}
-    </style>
-  </div>
-)
+        </style>
+    </div>
+);
 
-export default Grid
+export default Grid;

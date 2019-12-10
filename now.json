@@ -1,10 +1,10 @@
 {
-  "env": {
-    "AIRTABLE_TOKEN": "@airtable_token"
-  },
-  "build": {
     "env": {
-      "AIRTABLE_TOKEN": "@airtable_token"
+        "AIRTABLE_TOKEN": "@airtable_token"
+    },
+    "build": {
+        "env": {
+            "AIRTABLE_TOKEN": "@airtable_token"
+        }
     }
-  }
 }
