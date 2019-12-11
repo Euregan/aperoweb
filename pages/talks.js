@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 
 import fetch from '../lib/fetch';
-import { months } from '../lib/date';
 import Layout from '../components/Layout';
 import Talk from '../components/Talk';
-import Card from '../components/Card';
 import LoadingCard from '../components/LoadingCard';
 import Grid from '../components/Grid';
 
@@ -52,26 +50,18 @@ const Talks = () => {
                 <Grid>
                     {calendar === 'loading'
                         ? loadingCalendar
-                        : calendar.map((talk, index) =>
-                              talk ? (
-                                  <Talk key={index} talk={talk} />
-                              ) : (
-                                  <Card
-                                      key={index}
-                                      title={months[(index + new Date().getMonth()) % 12]}
-                                      state="pending"
-                                  >
-                                      Pending
-                                  </Card>
-                              ),
-                          )}
+                        : calendar.map((talk, index) => (
+                              <Talk key={`calendar-${index}`} talk={talk} />
+                          ))}
                 </Grid>
                 <h2>Not planned</h2>
                 <Grid>
                     {noDate === 'loading' ? (
                         <LoadingCard />
                     ) : (
-                        noDate.map((talk, index) => <Talk key={index} talk={talk} />)
+                        noDate.map((talk, index) => (
+                            <Talk key={`notplanned-${index}`} talk={talk} />
+                        ))
                     )}
                 </Grid>
             </Layout>
