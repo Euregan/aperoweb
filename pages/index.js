@@ -4,9 +4,8 @@ import { DateTime } from 'luxon';
 import fetch from '../lib/fetch';
 import { months } from '../lib/date';
 import Layout from '../components/Layout';
-import Card from '../components/Card';
+import Card, { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
-import LoadingCard from '../components/LoadingCard';
 
 const Home = () => {
     const [talks, setTalks] = useState('loading');
@@ -34,7 +33,7 @@ const Home = () => {
 
     const nextTalkCard =
         nextTalk === 'loading' ? (
-            <LoadingCard title="Next talk" lines={3} />
+            <CardWithLoading title="Next talk" />
         ) : (
             <Card title="Next talk">
                 <div>{DateTime.fromISO(nextTalk.date).toRelative()}</div>
@@ -49,7 +48,7 @@ const Home = () => {
 
     const plannedTalksCard =
         talks === 'loading' ? (
-            <LoadingCard title="Planned talks" lines={5} />
+            <CardWithLoading title="Planned talks" />
         ) : (
             <Card title="Planned talks">
                 {talks
@@ -62,7 +61,7 @@ const Home = () => {
 
     const nextEmptyMonthCard =
         talks === 'loading' ? (
-            <LoadingCard title="Next empty month" lines={2} />
+            <CardWithLoading title="Next empty month" />
         ) : (
             <Card title="Next empty month">
                 {
@@ -81,7 +80,7 @@ const Home = () => {
 
     const nextTweetCard =
         nextTweet === 'loading' ? (
-            <LoadingCard title="Next tweet" lines={3} />
+            <CardWithLoading title="Next tweet" />
         ) : (
             <Card title="Next tweet" state={nextTweet ? '' : 'error'}>
                 <div>

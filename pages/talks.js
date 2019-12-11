@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import fetch from '../lib/fetch';
 import Layout from '../components/Layout';
 import Talk from '../components/Talk';
-import LoadingCard from '../components/LoadingCard';
+import { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
 
 const Talks = () => {
@@ -36,10 +36,10 @@ const Talks = () => {
     }
 
     const loadingCalendar = [...Array(6).keys()]
-        .map((_, index) => <LoadingCard key={`LoadingCard${index}`} lines={5} />)
+        .map((_, index) => <CardWithLoading key={`CardWithLoading${index}`} />)
         .concat(
             [...Array(6).keys()].map((_, index) => (
-                <LoadingCard key={`LoadingCardConcat${index}`} lines={3} />
+                <CardWithLoading key={`CardWithLoadingConcat${index}`} />
             )),
         );
 
@@ -57,7 +57,7 @@ const Talks = () => {
                 <h2>Not planned</h2>
                 <Grid>
                     {noDate === 'loading' ? (
-                        <LoadingCard />
+                        <CardWithLoading />
                     ) : (
                         noDate.map((talk, index) => (
                             <Talk key={`notplanned-${index}`} talk={talk} />

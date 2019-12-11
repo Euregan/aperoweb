@@ -44,3 +44,13 @@ Card.defaultProps = {
 };
 
 export default Card;
+
+export const CardWithLoading = ({ title }) => <AntCard title={title} loading={true}></AntCard>;
+
+CardWithLoading.propTypes = {
+    title: PropTypes.string,
+};
+
+CardWithLoading.defaultTypes = {
+    title: '',
+};
