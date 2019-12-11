@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
 import fetch from '../lib/fetch';
-import { months } from '../lib/date';
 import Layout from '../components/Layout';
 import Talk from '../components/Talk';
-import Card from '../components/Card';
-import LoadingCard from '../components/LoadingCard';
+import Card, { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
+import { Info } from 'luxon';
 
 const Talks = () => {
     const [calendar, setCalendar] = useState('loading');
@@ -38,10 +37,10 @@ const Talks = () => {
     }
 
     const loadingCalendar = [...Array(6).keys()]
-        .map((_, index) => <LoadingCard key={`LoadingCard${index}`} lines={5} />)
+        .map((_, index) => <CardWithLoading key={`CardWithLoading${index}`} />)
         .concat(
             [...Array(6).keys()].map((_, index) => (
-                <LoadingCard key={`LoadingCardConcat${index}`} lines={3} />
+                <CardWithLoading key={`CardWithLoadingConcat${index}`} />
             )),
         );
 
@@ -57,8 +56,8 @@ const Talks = () => {
                                   <Talk key={index} talk={talk} />
                               ) : (
                                   <Card
-                                      key={index}
-                                      title={months[(index + new Date().getMonth()) % 12]}
+                                      key={`calendar-Pending${index}`}
+                                      title={Info.months()[(index + new Date().getMonth()) % 12]}
                                       state="pending"
                                   >
                                       Pending
@@ -69,9 +68,11 @@ const Talks = () => {
                 <h2>Not planned</h2>
                 <Grid>
                     {noDate === 'loading' ? (
-                        <LoadingCard />
+                        <CardWithLoading />
                     ) : (
-                        noDate.map((talk, index) => <Talk key={index} talk={talk} />)
+                        noDate.map((talk, index) => (
+                            <Talk key={`notplanned-${index}`} talk={talk} />
+                        ))
                     )}
                 </Grid>
             </Layout>

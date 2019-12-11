@@ -1,40 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DateTime } from 'luxon';
 
-import { months, days } from '../lib/date';
 import Card from './Card';
 
-const Talk = ({ talk }) => (
-    <Card
-        className="talk"
-        title={talk.date ? months[new Date(talk.date).getMonth()] : talk.name}
-        state={talk.date ? 'valid' : 'pending'}
-    >
-        {talk.date ? (
-            <div className="date">
-                {days[new Date(talk.date).getDay() - 1]} {new Date(talk.date).getDate()}
-            </div>
-        ) : (
-            ''
-        )}
-        {talk.date ? <div className="name">{talk.name || 'TBD'}</div> : ''}
-        <ul className="speakers">
-            {talk.speakers.map(({ name }) => (
-                <li key={name}>{name}</li>
-            ))}
-        </ul>
-    </Card>
-);
+const Talk = ({ talk }) => {
+    if (talk.date) {
+        return (
+            <Card className="talk" title={DateTime.fromISO(talk.date).monthLong} state="valid">
+                <div className="date">{DateTime.fromISO(talk.date).toFormat('cccc dd')}</div>
+                <div className="name">{talk.name}</div>
+                <ul className="speakers">
+                    {talk.speakers.map(({ name }) => (
+                        <li key={name}>{name}</li>
+                    ))}
+                </ul>
+            </Card>
+        );
+    }
+
+    return (
+        <Card className="talk" title={talk.name} state="pending">
+            <ul className="speakers">
+                {talk.speakers.map(({ name }) => (
+                    <li key={name}>{name}</li>
+                ))}
+            </ul>
+        </Card>
+    );
+};
 
 Talk.propTypes = {
     talk: PropTypes.shape({
-        name: PropTypes.string,
+        name: PropTypes.string.isRequired,
         date: PropTypes.string,
         speakers: PropTypes.arrayOf(
             PropTypes.shape({
-                name: PropTypes.string,
-            }),
-        ),
+                name: PropTypes.string.isRequired,
+            }).isRequired,
+        ).isRequired,
     }).isRequired,
 };
 
