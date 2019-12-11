@@ -4,9 +4,9 @@ import { getTalks } from '../../lib/airtable';
 
 const currentDate = DateTime.local();
 
-const removeOldTalks = talk => new Date(talk.date) > new Date();
+const isTalkPassed = talk => new Date(talk.date) > new Date();
 
-const futureTalks = month => ({
+const createTalkOnMonth = month => ({
     date: currentDate.set({ month }).toISO(),
 });
 
@@ -15,14 +15,14 @@ const completeNextYearTalks = sizeCurrentMonth =>
         {
             length: 12 - sizeCurrentMonth,
         },
-        (_, i) => futureTalks((i + new Date().getMonth() + 1 + sizeCurrentMonth) % 12),
+        (_, i) => createTalkOnMonth((i + new Date().getMonth() + 1 + sizeCurrentMonth) % 12),
     );
 
 export default async (req, res) => {
     try {
         const talks = await getTalks();
 
-        const futureTalks = talks.filter(removeOldTalks);
+        const futureTalks = talks.filter(isTalkPassed);
         const calendar = [...futureTalks, ...completeNextYearTalks(futureTalks.length)];
         const notPlanned = talks.filter(talk => !talk.date);
 
