@@ -3,9 +3,8 @@ import React from 'react';
 import fetch from '../lib/fetch';
 import Layout from '../components/Layout';
 import Talk from '../components/Talk';
-import Card, { CardWithLoading } from '../components/Card';
+import { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
-import { Info } from 'luxon';
 
 const Talks = () => {
     const [calendar, setCalendar] = React.useState(null);
@@ -13,26 +12,12 @@ const Talks = () => {
 
     React.useEffect(() => {
         const fetchTalks = async () => {
-            const { data: talks } = await fetch('/talks');
-
-            const calendar = talks
-                .filter(talk => new Date(talk.date) > new Date())
-                .reduce(
-                    (calendar, talk) => {
-                        const talkMonth = new Date(talk.date).getMonth();
-                        const currentMonth = new Date().getMonth();
-                        const index =
-                            talkMonth >= currentMonth
-                                ? talkMonth - currentMonth
-                                : 12 - currentMonth + talkMonth;
-                        calendar[index] = talk;
-                        return calendar;
-                    },
-                    [null, null, null, null, null, null, null, null, null, null, null, null],
-                );
+            const {
+                data: { calendar, notPlanned },
+            } = await fetch('/calendar');
 
             setCalendar(calendar);
-            setNoDate(talks.filter(talk => !talk.date));
+            setNoDate(notPlanned);
         };
 
         fetchTalks();
@@ -53,19 +38,7 @@ const Talks = () => {
                 <Grid>
                     {calendar === null
                         ? loadingCalendar
-                        : calendar.map((talk, index) =>
-                              talk ? (
-                                  <Talk key={index} talk={talk} />
-                              ) : (
-                                  <Card
-                                      key={`calendar-Pending${index}`}
-                                      title={Info.months()[(index + new Date().getMonth()) % 12]}
-                                      state="pending"
-                                  >
-                                      Pending
-                                  </Card>
-                              ),
-                          )}
+                        : calendar.map((talk, index) => <Talk key={index} talk={talk} />)}
                 </Grid>
                 <h2>Not planned</h2>
                 <Grid>
