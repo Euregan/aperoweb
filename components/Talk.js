@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import months from '../utilities/months';
-import days from '../utilities/days';
-import Card from '../components/card';
+import { months, days } from '../lib/date';
+import Card from './Card';
 
 const Talk = ({ talk }) => (
     <Card

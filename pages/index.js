@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { DateTime } from 'luxon';
-import fetch from '../frontside/fetch';
-import Layout from '../components/layout';
-import Card from '../components/card';
-import Grid from '../components/grid';
-import LoadingCard from '../components/loadingCard';
-import months from '../utilities/months';
+
+import fetch from '../lib/fetch';
+import { months } from '../lib/date';
+import Layout from '../components/Layout';
+import Card from '../components/Card';
+import Grid from '../components/Grid';
+import LoadingCard from '../components/LoadingCard';
 
 const Home = () => {
     const [talks, setTalks] = useState('loading');
@@ -35,7 +36,7 @@ const Home = () => {
         nextTalk === 'loading' ? (
             <LoadingCard title="Next talk" lines={3} />
         ) : (
-            <Card id="nextTalk" title="Next talk">
+            <Card title="Next talk">
                 <div>{DateTime.fromISO(nextTalk.date).toRelative()}</div>
                 <div>{nextTalk.name}</div>
                 <ul>
@@ -50,7 +51,7 @@ const Home = () => {
         talks === 'loading' ? (
             <LoadingCard title="Planned talks" lines={5} />
         ) : (
-            <Card id="plannedTalks" title="Planned talks">
+            <Card title="Planned talks">
                 {talks
                     .filter(talk => talk && talk.date)
                     .map(talk => (
@@ -63,7 +64,7 @@ const Home = () => {
         talks === 'loading' ? (
             <LoadingCard title="Next empty month" lines={2} />
         ) : (
-            <Card id="nextEmptyMonth" title="Next empty month">
+            <Card title="Next empty month">
                 {
                     months[
                         talks.reduce(

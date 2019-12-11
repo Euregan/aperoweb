@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import fetch from '../frontside/fetch';
-import Layout from '../components/layout';
-import Talk from '../components/talk';
-import Card from '../components/card';
-import LoadingCard from '../components/loadingCard';
-import Grid from '../components/grid';
-import months from '../utilities/months';
+
+import fetch from '../lib/fetch';
+import { months } from '../lib/date';
+import Layout from '../components/Layout';
+import Talk from '../components/Talk';
+import Card from '../components/Card';
+import LoadingCard from '../components/LoadingCard';
+import Grid from '../components/Grid';
 
 const Talks = () => {
     const [calendar, setCalendar] = useState('loading');

@@ -1,4 +1,4 @@
-import { tweets } from '../../serverside/airtable';
+import { tweets } from '../../lib/airtable';
 
 export default async (req, res) => {
     res.setHeader('Content-Type', 'application/json');

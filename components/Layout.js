@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { Layout } from 'antd';
 
-import Nav from './nav';
+import Nav from './Nav';
 
 const { Header, Content } = Layout;
 
@@ -42,7 +42,7 @@ const CustomLayout = ({ children }) => (
       `}</style>
         </Head>
 
-        <Layout id="page">
+        <Layout>
             <Header>
                 <Nav />
             </Header>
@@ -52,7 +52,7 @@ const CustomLayout = ({ children }) => (
 );
 
 CustomLayout.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 export default CustomLayout;

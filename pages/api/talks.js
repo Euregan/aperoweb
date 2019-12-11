@@ -1,4 +1,4 @@
-import { talks } from '../../serverside/airtable';
+import { talks } from '../../lib/airtable';
 
 export default async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
