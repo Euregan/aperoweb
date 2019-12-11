@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import fetch from '../lib/fetch';
 import Layout from '../components/Layout';
 import Talk from '../components/Talk';
-import { CardWithLoading } from '../components/Card';
+import Card, { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
+import { Info } from 'luxon';
 
 const Talks = () => {
     const [calendar, setCalendar] = useState('loading');
@@ -50,9 +51,19 @@ const Talks = () => {
                 <Grid>
                     {calendar === 'loading'
                         ? loadingCalendar
-                        : calendar.map((talk, index) => (
-                              <Talk key={`calendar-${index}`} talk={talk} />
-                          ))}
+                        : calendar.map((talk, index) =>
+                              talk ? (
+                                  <Talk key={index} talk={talk} />
+                              ) : (
+                                  <Card
+                                      key={`calendar-Pending${index}`}
+                                      title={Info.months()[(index + new Date().getMonth()) % 12]}
+                                      state="pending"
+                                  >
+                                      Pending
+                                  </Card>
+                              ),
+                          )}
                 </Grid>
                 <h2>Not planned</h2>
                 <Grid>

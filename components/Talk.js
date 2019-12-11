@@ -5,14 +5,6 @@ import { DateTime } from 'luxon';
 import Card from './Card';
 
 const Talk = ({ talk }) => {
-    if (!talk) {
-        return (
-            <Card title={DateTime.fromISO(new Date().toISOString()).monthLong} state="pending">
-                Pending
-            </Card>
-        );
-    }
-
     if (talk.date) {
         return (
             <Card className="talk" title={DateTime.fromISO(talk.date).monthLong} state="valid">
@@ -47,11 +39,7 @@ Talk.propTypes = {
                 name: PropTypes.string.isRequired,
             }).isRequired,
         ).isRequired,
-    }),
-};
-
-Talk.defaultProps = {
-    talk: null,
+    }).isRequired,
 };
 
 export default Talk;

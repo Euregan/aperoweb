@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { DateTime } from 'luxon';
+import { DateTime, Info } from 'luxon';
 
 import fetch from '../lib/fetch';
-import { months } from '../lib/date';
 import Layout from '../components/Layout';
 import Card, { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
@@ -65,7 +64,7 @@ const Home = () => {
         ) : (
             <Card title="Next empty month">
                 {
-                    months[
+                    Info.months()[
                         talks.reduce(
                             (lastMonth, talk) =>
                                 new Date(talk.date).getMonth() === (lastMonth + 1) % 12
