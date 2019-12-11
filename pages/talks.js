@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import fetch from '../lib/fetch';
 import Layout from '../components/Layout';
@@ -8,16 +8,16 @@ import Grid from '../components/Grid';
 import { Info } from 'luxon';
 
 const Talks = () => {
-    const [calendar, setCalendar] = useState('loading');
-    const [noDate, setNoDate] = useState('loading');
+    const [calendar, setCalendar] = React.useState(null);
+    const [noDate, setNoDate] = React.useState(null);
 
-    if (calendar === 'loading' && noDate === 'loading') {
-        const talks = fetch('/talks').catch(error => console.error(error) || []);
+    React.useEffect(() => {
+        const fetchTalks = async () => {
+            const { data: talks } = await fetch('/talks');
 
-        talks
-            .then(talks => talks.filter(talk => new Date(talk.date) > new Date()))
-            .then(talks =>
-                talks.reduce(
+            const calendar = talks
+                .filter(talk => new Date(talk.date) > new Date())
+                .reduce(
                     (calendar, talk) => {
                         const talkMonth = new Date(talk.date).getMonth();
                         const currentMonth = new Date().getMonth();
@@ -29,12 +29,14 @@ const Talks = () => {
                         return calendar;
                     },
                     [null, null, null, null, null, null, null, null, null, null, null, null],
-                ),
-            )
-            .then(talks => setCalendar(talks));
+                );
 
-        talks.then(talks => setNoDate(talks.filter(talk => !talk.date)));
-    }
+            setCalendar(calendar);
+            setNoDate(talks.filter(talk => !talk.date));
+        };
+
+        fetchTalks();
+    }, []);
 
     const loadingCalendar = [...Array(6).keys()]
         .map((_, index) => <CardWithLoading key={`CardWithLoading${index}`} />)
@@ -49,7 +51,7 @@ const Talks = () => {
             <Layout>
                 <h2>Calendar</h2>
                 <Grid>
-                    {calendar === 'loading'
+                    {calendar === null
                         ? loadingCalendar
                         : calendar.map((talk, index) =>
                               talk ? (
@@ -67,7 +69,7 @@ const Talks = () => {
                 </Grid>
                 <h2>Not planned</h2>
                 <Grid>
-                    {noDate === 'loading' ? (
+                    {noDate === null ? (
                         <CardWithLoading />
                     ) : (
                         noDate.map((talk, index) => (

@@ -1,15 +1,11 @@
-import { talks } from '../../lib/airtable';
+import { getTalks } from '../../lib/airtable';
 
 export default async (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
+    try {
+        const talks = await getTalks();
 
-    talks()
-        .then(talks => {
-            res.statusCode = 200;
-            res.end(JSON.stringify(talks));
-        })
-        .catch(error => {
-            res.statusCode = 500;
-            res.end(JSON.stringify(error));
-        });
+        return res.status(200).json({ data: talks });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
 };

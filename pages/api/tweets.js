@@ -1,15 +1,11 @@
-import { tweets } from '../../lib/airtable';
+import { getTweets } from '../../lib/airtable';
 
 export default async (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
+    try {
+        const tweets = await getTweets();
 
-    tweets()
-        .then(tweets => {
-            res.statusCode = 200;
-            res.end(JSON.stringify(tweets));
-        })
-        .catch(error => {
-            res.statusCode = 500;
-            res.end(JSON.stringify(error));
-        });
+        return res.status(200).json({ data: tweets });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
 };
