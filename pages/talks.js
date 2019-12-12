@@ -12,7 +12,10 @@ const Talks = () => {
 
     React.useEffect(() => {
         const fetchTalks = async () => {
-            const { calendar, notPlanned } = await fetch('/calendar');
+            const { calendar, notPlanned, error } = await fetch('/calendar');
+            if (error) {
+                return console.error(error);
+            }
 
             setCalendar(calendar);
             setNoDate(notPlanned);

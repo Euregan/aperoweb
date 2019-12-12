@@ -13,7 +13,11 @@ const Home = () => {
 
     React.useEffect(() => {
         const fetchTalks = async () => {
-            const { talks } = await fetch('/talks');
+            const { talks, error } = await fetch('/talks');
+            if (error) {
+                return console.error(error);
+            }
+
             setTalks(talks);
             setNextTalk(talks.find(talk => new Date(talk.date) > new Date()));
         };
@@ -23,7 +27,11 @@ const Home = () => {
 
     React.useEffect(() => {
         const fetchTweets = async () => {
-            const { tweets } = await fetch('/tweets');
+            const { tweets, error } = await fetch('/tweets');
+            if (error) {
+                return console.log(error);
+            }
+
             setNextTweet(tweets.find(tweet => new Date(tweet.date) > new Date()));
         };
 
