@@ -1,30 +1,13 @@
 import React from 'react';
 
-import fetch from '../lib/fetch';
+import useDataApi from '../lib/useDataApi';
 import Layout from '../components/Layout';
 import Talk from '../components/Talk';
 import { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
 
-const Talks = () => {
-    const [calendar, setCalendar] = React.useState(null);
-    const [noDate, setNoDate] = React.useState(null);
-
-    React.useEffect(() => {
-        const fetchTalks = async () => {
-            const { calendar, notPlanned, error } = await fetch('/calendar');
-            if (error) {
-                return console.error(error);
-            }
-
-            setCalendar(calendar);
-            setNoDate(notPlanned);
-        };
-
-        fetchTalks();
-    }, []);
-
-    const loadingCalendar = [...Array(6).keys()]
+const LoadingCalendar = () =>
+    [...Array(6).keys()]
         .map((_, index) => <CardWithLoading key={`CardWithLoading${index}`} />)
         .concat(
             [...Array(6).keys()].map((_, index) => (
@@ -32,21 +15,35 @@ const Talks = () => {
             )),
         );
 
+const Talks = () => {
+    const {
+        data: { calendar, notPlanned },
+        isLoading,
+        isError,
+    } = useDataApi('/api/calendar', {
+        calendar: [],
+        notPlanned: [],
+    });
+
+    const isLoadingElement = isLoading || isError;
+
     return (
         <div>
             <Layout>
                 <h2>Calendar</h2>
                 <Grid>
-                    {calendar === null
-                        ? loadingCalendar
-                        : calendar.map((talk, index) => <Talk key={index} talk={talk} />)}
+                    {isLoadingElement ? (
+                        <LoadingCalendar />
+                    ) : (
+                        calendar.map((talk, index) => <Talk key={index} talk={talk} />)
+                    )}
                 </Grid>
                 <h2>Not planned</h2>
                 <Grid>
-                    {noDate === null ? (
+                    {isLoadingElement ? (
                         <CardWithLoading />
                     ) : (
-                        noDate.map((talk, index) => (
+                        notPlanned.map((talk, index) => (
                             <Talk key={`notplanned-${index}`} talk={talk} />
                         ))
                     )}
