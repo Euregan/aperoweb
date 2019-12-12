@@ -13,7 +13,7 @@ const Home = () => {
 
     React.useEffect(() => {
         const fetchTalks = async () => {
-            const { data: talks } = await fetch('/talks');
+            const { talks } = await fetch('/talks');
             setTalks(talks);
             setNextTalk(talks.find(talk => new Date(talk.date) > new Date()));
         };
@@ -23,7 +23,7 @@ const Home = () => {
 
     React.useEffect(() => {
         const fetchTweets = async () => {
-            const { data: tweets } = await fetch('/tweets');
+            const { tweets } = await fetch('/tweets');
             setNextTweet(tweets.find(tweet => new Date(tweet.date) > new Date()));
         };
 

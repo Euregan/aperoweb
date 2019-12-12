@@ -12,9 +12,7 @@ const Talks = () => {
 
     React.useEffect(() => {
         const fetchTalks = async () => {
-            const {
-                data: { calendar, notPlanned },
-            } = await fetch('/calendar');
+            const { calendar, notPlanned } = await fetch('/calendar');
 
             setCalendar(calendar);
             setNoDate(notPlanned);

@@ -26,7 +26,7 @@ export default async (req, res) => {
         const calendar = [...futureTalks, ...completeNextYearTalks(futureTalks.length)];
         const notPlanned = talks.filter(talk => !talk.date);
 
-        return res.status(200).json({ data: { calendar, notPlanned } });
+        return res.status(200).json({ calendar, notPlanned });
     } catch (error) {
         return res.status(500).json({ error });
     }
