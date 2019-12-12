@@ -5,6 +5,14 @@ import { DateTime } from 'luxon';
 import Card from './Card';
 
 const Talk = ({ talk }) => {
+    if (!talk.name) {
+        return (
+            <Card className="talk" title={DateTime.fromISO(talk.date).monthLong} state="pending">
+                Pending
+            </Card>
+        );
+    }
+
     if (talk.date) {
         return (
             <Card className="talk" title={DateTime.fromISO(talk.date).monthLong} state="valid">
@@ -32,13 +40,13 @@ const Talk = ({ talk }) => {
 
 Talk.propTypes = {
     talk: PropTypes.shape({
-        name: PropTypes.string.isRequired,
+        name: PropTypes.string,
         date: PropTypes.string,
         speakers: PropTypes.arrayOf(
             PropTypes.shape({
                 name: PropTypes.string.isRequired,
             }).isRequired,
-        ).isRequired,
+        ),
     }).isRequired,
 };
 

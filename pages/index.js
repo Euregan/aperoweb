@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DateTime, Info } from 'luxon';
 
 import fetch from '../lib/fetch';
@@ -7,31 +7,39 @@ import Card, { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
 
 const Home = () => {
-    const [talks, setTalks] = useState('loading');
-    const [nextTalk, setNextTalk] = useState('loading');
-    const [tweets, setTweets] = useState('loading');
-    const [nextTweet, setNextTweet] = useState('loading');
+    const [talks, setTalks] = React.useState(null);
+    const [nextTalk, setNextTalk] = React.useState(null);
+    const [nextTweet, setNextTweet] = React.useState(null);
 
-    if (talks === 'loading' && nextTalk === 'loading') {
-        const talks = fetch('/talks').catch(error => console.error(error) || []);
+    React.useEffect(() => {
+        const fetchTalks = async () => {
+            const { talks, error } = await fetch('/talks');
+            if (error) {
+                return console.error(error);
+            }
 
-        talks.then(setTalks);
-        talks
-            .then(talks => talks.find(talk => talk && new Date(talk.date) > new Date()))
-            .then(setNextTalk);
-    }
+            setTalks(talks);
+            setNextTalk(talks.find(talk => new Date(talk.date) > new Date()));
+        };
 
-    if (tweets === 'loading' && nextTweet === 'loading') {
-        const tweets = fetch('/tweets').catch(error => console.error(error) || []);
+        fetchTalks();
+    }, []);
 
-        tweets.then(setTweets);
-        tweets
-            .then(tweets => tweets.find(tweet => new Date(tweet.date) > new Date()))
-            .then(setNextTweet);
-    }
+    React.useEffect(() => {
+        const fetchTweets = async () => {
+            const { tweets, error } = await fetch('/tweets');
+            if (error) {
+                return console.log(error);
+            }
+
+            setNextTweet(tweets.find(tweet => new Date(tweet.date) > new Date()));
+        };
+
+        fetchTweets();
+    }, []);
 
     const nextTalkCard =
-        nextTalk === 'loading' ? (
+        nextTalk === null ? (
             <CardWithLoading title="Next talk" />
         ) : (
             <Card title="Next talk">
@@ -46,7 +54,7 @@ const Home = () => {
         );
 
     const plannedTalksCard =
-        talks === 'loading' ? (
+        talks === null ? (
             <CardWithLoading title="Planned talks" />
         ) : (
             <Card title="Planned talks">
@@ -59,7 +67,7 @@ const Home = () => {
         );
 
     const nextEmptyMonthCard =
-        talks === 'loading' ? (
+        talks === null ? (
             <CardWithLoading title="Next empty month" />
         ) : (
             <Card title="Next empty month">
@@ -78,7 +86,7 @@ const Home = () => {
         );
 
     const nextTweetCard =
-        nextTweet === 'loading' ? (
+        nextTweet === null ? (
             <CardWithLoading title="Next tweet" />
         ) : (
             <Card title="Next tweet" state={nextTweet ? '' : 'error'}>
