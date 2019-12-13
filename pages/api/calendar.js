@@ -17,11 +17,9 @@ const fillYearEvents = existingTalk => {
 export default async (req, res) => {
     try {
         const talks = await getTalks();
-
         const calendar = fillYearEvents(talks.filter(isTalkPassed));
-        const notPlanned = talks.filter(talk => !talk.date);
 
-        return res.status(200).json({ calendar, notPlanned });
+        return res.status(200).json({ calendar });
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }

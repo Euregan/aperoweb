@@ -15,42 +15,41 @@ const LoadingCalendar = () =>
             )),
         );
 
-const Talks = () => {
+const NotPlanned = () => {
     const {
-        data: { calendar, notPlanned },
-        isLoading,
+        data: { notPlanned },
         isError,
-    } = useDataApi('/api/calendar', {
-        calendar: [],
-        notPlanned: [],
-    });
+    } = useDataApi('/api/notPlanned', { notPlanned: null });
 
-    const isLoadingElement = isLoading || isError;
+    if (isError) return <CardWithLoading />;
+    if (!notPlanned) return <CardWithLoading />;
 
-    return (
-        <div>
-            <Layout>
-                <h2>Calendar</h2>
-                <Grid>
-                    {isLoadingElement ? (
-                        <LoadingCalendar />
-                    ) : (
-                        calendar.map((talk, index) => <Talk key={index} talk={talk} />)
-                    )}
-                </Grid>
-                <h2>Not planned</h2>
-                <Grid>
-                    {isLoadingElement ? (
-                        <CardWithLoading />
-                    ) : (
-                        notPlanned.map((talk, index) => (
-                            <Talk key={`notplanned-${index}`} talk={talk} />
-                        ))
-                    )}
-                </Grid>
-            </Layout>
-        </div>
-    );
+    return notPlanned.map((talk, index) => <Talk key={`notplanned-${index}`} talk={talk} />);
 };
+
+const Calendar = () => {
+    const {
+        data: { calendar },
+        isError,
+    } = useDataApi('/api/calendar', { calendar: null });
+
+    if (isError) return <LoadingCalendar />;
+    if (!calendar) return <LoadingCalendar />;
+
+    return calendar.map((talk, index) => <Talk key={index} talk={talk} />);
+};
+
+const Talks = () => (
+    <Layout>
+        <h2>Calendar</h2>
+        <Grid>
+            <Calendar />
+        </Grid>
+        <h2>Not planned</h2>
+        <Grid>
+            <NotPlanned />
+        </Grid>
+    </Layout>
+);
 
 export default Talks;
