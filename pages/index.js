@@ -1,7 +1,7 @@
 import React from 'react';
 import { formatDistance } from 'date-fns';
 
-import fetch from '../lib/fetch';
+import useDataApi from '../lib/useDataApi';
 import Layout from '../components/Layout';
 import Card, { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
@@ -22,98 +22,92 @@ const months = [
 ];
 
 const Home = () => {
-    const [talks, setTalks] = React.useState(null);
-    const [nextTalk, setNextTalk] = React.useState(null);
-    const [nextTweet, setNextTweet] = React.useState(null);
+    //todo improve in next PR
+    const {
+        data: { talks },
+        isLoading: isLoadingTalks,
+        isError: isErrorTalks,
+    } = useDataApi('/api/talks', {
+        talks: [],
+    });
 
-    React.useEffect(() => {
-        const fetchTalks = async () => {
-            const { talks, error } = await fetch('/talks');
-            if (error) {
-                return console.error(error);
+    const {
+        data: { tweets },
+        isLoading: isLoadingTweets,
+        isError: isErrorTweets,
+    } = useDataApi('/api/tweets', {
+        tweets: [],
+    });
+
+    const isLoadingTalksElement = isLoadingTalks || isErrorTalks || !talks.length;
+    const isLoadingTweetsElement = isLoadingTweets || isErrorTweets || !tweets.length;
+
+    let nextTalk = {};
+    if (!isLoadingTalksElement) {
+        nextTalk = talks.find(talk => new Date(talk.date) > new Date());
+    }
+    let nextTweet = {};
+    if (!isLoadingTweetsElement) {
+        nextTweet = tweets.find(tweet => new Date(tweet.date) > new Date());
+    }
+
+    const nextTalkCard = isLoadingTalksElement ? (
+        <CardWithLoading title="Next talk" />
+    ) : (
+        <Card title="Next talk">
+            <div>{formatDistance(new Date(nextTalk.date), new Date())}</div>
+            <div>{nextTalk.name}</div>
+            <ul>
+                {nextTalk.speakers.map(speaker => (
+                    <li key={speaker.name}>{speaker.name}</li>
+                ))}
+            </ul>
+        </Card>
+    );
+
+    const plannedTalksCard = isLoadingTalksElement ? (
+        <CardWithLoading title="Planned talks" />
+    ) : (
+        <Card title="Planned talks">
+            {talks
+                .filter(talk => talk && talk.date)
+                .map(talk => (
+                    <div key={talk.name}>{talk.name}</div>
+                ))}
+        </Card>
+    );
+
+    const nextEmptyMonthCard = isLoadingTalksElement ? (
+        <CardWithLoading title="Next empty month" />
+    ) : (
+        <Card title="Next empty month">
+            {
+                // todo another PR, put this logic on API side
+                months[
+                    talks.reduce(
+                        (lastMonth, talk) =>
+                            new Date(talk.date).getMonth() === (lastMonth + 1) % 12
+                                ? (lastMonth + 1) % 12
+                                : lastMonth,
+                        new Date().getMonth() - 1,
+                    ) + 1
+                ]
             }
+        </Card>
+    );
 
-            setTalks(talks);
-            setNextTalk(talks.find(talk => new Date(talk.date) > new Date()));
-        };
-
-        fetchTalks();
-    }, []);
-
-    React.useEffect(() => {
-        const fetchTweets = async () => {
-            const { tweets, error } = await fetch('/tweets');
-            if (error) {
-                return console.log(error);
-            }
-
-            setNextTweet(tweets.find(tweet => new Date(tweet.date) > new Date()));
-        };
-
-        fetchTweets();
-    }, []);
-
-    const nextTalkCard =
-        nextTalk === null ? (
-            <CardWithLoading title="Next talk" />
-        ) : (
-            <Card title="Next talk">
-                <div>{formatDistance(new Date(nextTalk.date), new Date())}</div>
-                <div>{nextTalk.name}</div>
-                <ul>
-                    {nextTalk.speakers.map(speaker => (
-                        <li key={speaker.name}>{speaker.name}</li>
-                    ))}
-                </ul>
-            </Card>
-        );
-
-    const plannedTalksCard =
-        talks === null ? (
-            <CardWithLoading title="Planned talks" />
-        ) : (
-            <Card title="Planned talks">
-                {talks
-                    .filter(talk => talk && talk.date)
-                    .map(talk => (
-                        <div key={talk.name}>{talk.name}</div>
-                    ))}
-            </Card>
-        );
-
-    const nextEmptyMonthCard =
-        talks === null ? (
-            <CardWithLoading title="Next empty month" />
-        ) : (
-            <Card title="Next empty month">
-                {
-                    // todo another PR, put this logic on API side
-                    months[
-                        talks.reduce(
-                            (lastMonth, talk) =>
-                                new Date(talk.date).getMonth() === (lastMonth + 1) % 12
-                                    ? (lastMonth + 1) % 12
-                                    : lastMonth,
-                            new Date().getMonth() - 1,
-                        ) + 1
-                    ]
-                }
-            </Card>
-        );
-
-    const nextTweetCard =
-        nextTweet === null ? (
-            <CardWithLoading title="Next tweet" />
-        ) : (
-            <Card title="Next tweet" state={nextTweet ? '' : 'error'}>
-                <div>
-                    {nextTweet
-                        ? formatDistance(new Date(nextTweet.date), new Date())
-                        : 'No tweet has been prepared!'}
-                </div>
-                <div>{nextTweet ? nextTweet.talk.name : ''}</div>
-            </Card>
-        );
+    const nextTweetCard = isLoadingTweetsElement ? (
+        <CardWithLoading title="Next tweet" />
+    ) : (
+        <Card title="Next tweet" state={nextTweet ? '' : 'error'}>
+            <div>
+                {nextTweet
+                    ? formatDistance(new Date(nextTweet.date), new Date())
+                    : 'No tweet has been prepared!'}
+            </div>
+            <div>{nextTweet ? nextTweet.talk.name : ''}</div>
+        </Card>
+    );
 
     return (
         <Layout>
