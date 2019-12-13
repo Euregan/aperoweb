@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { formatDistance, format } from 'date-fns';
 
 import useDataApi from '../lib/useDataApi';
@@ -6,43 +7,42 @@ import Layout from '../components/Layout';
 import Card, { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
 
-const NextTalkCard = ({ talk }) => {
-    if (!talk) {
-        return <CardWithLoading title="Next talk" />;
-    }
-
-    const { date, name, speakers } = talk;
-    return (
-        <Card title="Next talk">
-            <div>{formatDistance(new Date(date), new Date())}</div>
-            <div>{name}</div>
-            <ul>
-                {speakers.map(speaker => (
-                    <li key={speaker.name}>{speaker.name}</li>
-                ))}
-            </ul>
-        </Card>
-    );
-};
-
-const PlannedTalksCard = ({ talks }) => {
-    if (!talks) {
-        return <CardWithLoading title="Planned talks" />;
-    }
-    return (
-        <Card title="Planned talks">
-            {talks.map(talk => (
-                <div key={talk.name}>{talk.name}</div>
+const NextTalkCard = ({ date, name, speakers }) => (
+    <Card title="Next talk">
+        <div>{formatDistance(new Date(date), new Date())}</div>
+        <div>{name}</div>
+        <ul>
+            {speakers.map(({ name }) => (
+                <li key={name}>{name}</li>
             ))}
-        </Card>
-    );
+        </ul>
+    </Card>
+);
+
+NextTalkCard.propTypes = {
+    date: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    speakers: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })).isRequired,
 };
 
-const EmptyMonthCard = ({ date }) => {
-    if (!date) {
-        return <CardWithLoading title="Next empty month" />;
-    }
-    return <Card title="Next empty month">{format(new Date(date), 'MMMM')}</Card>;
+const PlannedTalksCard = ({ talks }) => (
+    <Card title="Planned talks">
+        {talks.map(talk => (
+            <div key={talk.name}>{talk.name}</div>
+        ))}
+    </Card>
+);
+
+PlannedTalksCard.propTypes = {
+    talks: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })).isRequired,
+};
+
+const EmptyMonthCard = ({ date }) => (
+    <Card title="Next empty month">{format(new Date(date), 'MMMM')}</Card>
+);
+
+EmptyMonthCard.propTypes = {
+    date: PropTypes.string.isRequired,
 };
 
 const Talks = () => {
@@ -56,10 +56,19 @@ const Talks = () => {
     });
 
     if (isError) return <CardWithLoading />;
+    if (!nextTalk || !plannedTalks || !nextEmptyMonth) {
+        return (
+            <React.Fragment>
+                <CardWithLoading title="Next talk" />
+                <CardWithLoading title="Planned talks" />
+                <CardWithLoading title="Next empty month" />
+            </React.Fragment>
+        );
+    }
 
     return (
         <React.Fragment>
-            <NextTalkCard talk={nextTalk} />
+            <NextTalkCard {...nextTalk} />
             <PlannedTalksCard talks={plannedTalks} />
             <EmptyMonthCard date={nextEmptyMonth} />
         </React.Fragment>
