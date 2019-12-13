@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DateTime } from 'luxon';
+import { format } from 'date-fns';
 
 import Card from './Card';
 
 const Talk = ({ talk }) => {
     if (!talk.name) {
         return (
-            <Card className="talk" title={DateTime.fromISO(talk.date).monthLong} state="pending">
+            <Card className="talk" title={format(new Date(talk.date), 'MMMM')} state="pending">
                 Pending
             </Card>
         );
@@ -15,8 +15,8 @@ const Talk = ({ talk }) => {
 
     if (talk.date) {
         return (
-            <Card className="talk" title={DateTime.fromISO(talk.date).monthLong} state="valid">
-                <div className="date">{DateTime.fromISO(talk.date).toFormat('cccc dd')}</div>
+            <Card className="talk" title={format(new Date(talk.date), 'MMMM')} state="valid">
+                <div className="date">{format(new Date(talk.date), 'EEEE dd')}</div>
                 <div className="name">{talk.name}</div>
                 <ul className="speakers">
                     {talk.speakers.map(({ name }) => (

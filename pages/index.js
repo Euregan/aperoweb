@@ -1,10 +1,25 @@
 import React from 'react';
-import { DateTime, Info } from 'luxon';
+import { formatDistance } from 'date-fns';
 
 import fetch from '../lib/fetch';
 import Layout from '../components/Layout';
 import Card, { CardWithLoading } from '../components/Card';
 import Grid from '../components/Grid';
+
+const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+];
 
 const Home = () => {
     const [talks, setTalks] = React.useState(null);
@@ -43,7 +58,7 @@ const Home = () => {
             <CardWithLoading title="Next talk" />
         ) : (
             <Card title="Next talk">
-                <div>{DateTime.fromISO(nextTalk.date).toRelative()}</div>
+                <div>{formatDistance(new Date(nextTalk.date), new Date())}</div>
                 <div>{nextTalk.name}</div>
                 <ul>
                     {nextTalk.speakers.map(speaker => (
@@ -72,7 +87,8 @@ const Home = () => {
         ) : (
             <Card title="Next empty month">
                 {
-                    Info.months()[
+                    // todo another PR, put this logic on API side
+                    months[
                         talks.reduce(
                             (lastMonth, talk) =>
                                 new Date(talk.date).getMonth() === (lastMonth + 1) % 12
@@ -92,7 +108,7 @@ const Home = () => {
             <Card title="Next tweet" state={nextTweet ? '' : 'error'}>
                 <div>
                     {nextTweet
-                        ? DateTime.fromISO(nextTweet.date).toRelative()
+                        ? formatDistance(new Date(nextTweet.date), new Date())
                         : 'No tweet has been prepared!'}
                 </div>
                 <div>{nextTweet ? nextTweet.talk.name : ''}</div>

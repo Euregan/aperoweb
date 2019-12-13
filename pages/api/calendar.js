@@ -1,13 +1,14 @@
-import { DateTime } from 'luxon';
+import { setMonth, getMonth } from 'date-fns';
 
 import { getTalks } from '../../lib/airtable';
 
-const currentDate = DateTime.local();
+const currentDate = new Date();
+const currentMonth = getMonth(currentDate);
 
 const isTalkPassed = talk => new Date(talk.date) > new Date();
 
 const createTalkOnMonth = month => ({
-    date: currentDate.set({ month }).toISO(),
+    date: setMonth(currentDate, month),
 });
 
 const completeNextYearTalks = sizeCurrentMonth =>
@@ -15,7 +16,7 @@ const completeNextYearTalks = sizeCurrentMonth =>
         {
             length: 12 - sizeCurrentMonth,
         },
-        (_, i) => createTalkOnMonth((i + new Date().getMonth() + 1 + sizeCurrentMonth) % 12),
+        (_, i) => createTalkOnMonth((i + currentMonth + sizeCurrentMonth) % 12),
     );
 
 export default async (req, res) => {
