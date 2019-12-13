@@ -84,9 +84,9 @@ const Communication = () => {
     });
 
     if (isError) return <CardWithLoading title="Next tweet" />;
-    if (nextTweet === null) return <CardWithLoading title="Next tweet" />;
+    if (!nextTweet) return <CardWithLoading title="Next tweet" />;
 
-    if (!nextTweet) {
+    if (!nextTweet.date) {
         return (
             <Card title="Next tweet" state="error">
                 <div>No tweet has been prepared!</div>
