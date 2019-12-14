@@ -3,6 +3,7 @@ module.exports = {
         browser: true,
         es6: true,
         node: true,
+        'jest/globals': true,
     },
     extends: [
         'eslint:recommended',
@@ -10,6 +11,8 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:import/errors',
         'plugin:import/warnings',
+        'plugin:jest/recommended',
+        'plugin:jest/style',
     ],
     parserOptions: {
         ecmaFeatures: {

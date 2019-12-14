@@ -6,6 +6,8 @@
         "dev": "next dev -p 3002",
         "build": "next build",
         "start": "next start",
+        "test": "jest",
+        "test:watch": "jest --watch",
         "lint": "eslint .",
         "format": "prettier --write \"**/*.+(js|json|css|md)\""
     },
@@ -23,12 +25,19 @@
         "react-dom": "16.10.2"
     },
     "devDependencies": {
+        "@babel/core": "^7.7.5",
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.4.0",
+        "babel-jest": "^24.9.0",
         "eslint": "^6.7.2",
         "eslint-config-prettier": "^6.7.0",
         "eslint-plugin-import": "^2.19.1",
+        "eslint-plugin-jest": "^23.1.1",
         "eslint-plugin-prettier": "^3.1.1",
         "eslint-plugin-react": "^7.17.0",
         "husky": "^3.1.0",
+        "jest": "^24.9.0",
+        "jest-date-mock": "^1.0.7",
         "lint-staged": "^9.5.0",
         "prettier": "^1.19.1"
     },

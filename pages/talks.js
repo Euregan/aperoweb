@@ -25,7 +25,7 @@ const NotPlanned = () => {
     if (isError) return <CardWithLoading />;
     if (isLoading || !notPlanned) return <CardWithLoading />;
 
-    return notPlanned.map((talk, index) => <Talk key={`notplanned-${index}`} talk={talk} />);
+    return notPlanned.map((talk, index) => <Talk key={`notplanned-${index}`} {...talk} />);
 };
 
 const Calendar = () => {
@@ -38,7 +38,7 @@ const Calendar = () => {
     if (isError) return <LoadingCalendar />;
     if (isLoading || !calendar) return <LoadingCalendar />;
 
-    return calendar.map((talk, index) => <Talk key={index} talk={talk} />);
+    return calendar.map((talk, index) => <Talk key={index} {...talk} />);
 };
 
 const Talks = () => (

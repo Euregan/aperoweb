@@ -4,12 +4,11 @@ import { getTalks } from '../../lib/airtable';
 
 const isTalkPassed = talk => new Date(talk.date) > new Date();
 
-const fillYearEvents = existingTalk => {
+export const fillYearEvents = existingTalk => {
     const [firstDate] = existingTalk.map(({ date }) => new Date(date)) || [new Date()];
     return Array.from({ length: 12 }, (_, i) => {
         const currentDate = addMonths(firstDate, i);
         const talk = existingTalk.find(({ date }) => isSameMonth(currentDate, new Date(date)));
-
         return talk || { date: currentDate };
     });
 };
