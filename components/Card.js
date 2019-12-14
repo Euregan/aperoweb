@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card as AntCard, Icon } from 'antd';
+import { Card as AntCard, Icon, Button } from 'antd';
 import { blue, green, orange, red } from '@ant-design/colors';
 
 const stateToIcon = {
@@ -51,6 +51,32 @@ CardWithLoading.propTypes = {
     title: PropTypes.string,
 };
 
-CardWithLoading.defaultTypes = {
+CardWithLoading.defaultProps = {
     title: '',
+};
+
+export const CardWithError = ({ title, onClick }) => (
+    <AntCard
+        title={title}
+        extra={
+            title ? <Icon type="close-circle" theme="twoTone" twoToneColor={red.primary} /> : null
+        }
+        actions={[
+            <Button key="antCard-dangerAction" type="danger" onClick={onClick}>
+                Try Again
+            </Button>,
+        ]}
+    >
+        <AntCard.Meta title="ERROR !" description="Oh no, someting went wrong" />
+    </AntCard>
+);
+
+CardWithError.propTypes = {
+    title: PropTypes.string,
+    onClick: PropTypes.func,
+};
+
+CardWithError.defaultProps = {
+    title: '',
+    onClick: () => {},
 };

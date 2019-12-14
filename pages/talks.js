@@ -3,15 +3,15 @@ import React from 'react';
 import useDataApi from '../lib/useDataApi';
 import Layout from '../components/Layout';
 import Talk from '../components/Talk';
-import { CardWithLoading } from '../components/Card';
+import { CardWithLoading, CardWithError } from '../components/Card';
 import Grid from '../components/Grid';
 
-const LoadingCalendar = () =>
+const EmptyCalendar = ({ render }) =>
     [...Array(6).keys()]
-        .map((_, index) => <CardWithLoading key={`CardWithLoading${index}`} />)
+        .map((_, index) => <React.Fragment key={index}>{render}</React.Fragment>)
         .concat(
             [...Array(6).keys()].map((_, index) => (
-                <CardWithLoading key={`CardWithLoadingConcat${index}`} />
+                <React.Fragment key={index}>{render}</React.Fragment>
             )),
         );
 
@@ -20,9 +20,10 @@ const NotPlanned = () => {
         data: { notPlanned },
         isLoading,
         isError,
+        retry,
     } = useDataApi('/api/notPlanned', { notPlanned: null });
 
-    if (isError) return <CardWithLoading />;
+    if (isError) return <CardWithError onClick={retry} />;
     if (isLoading || !notPlanned) return <CardWithLoading />;
 
     return notPlanned.map((talk, index) => <Talk key={`notplanned-${index}`} {...talk} />);
@@ -33,10 +34,11 @@ const Calendar = () => {
         data: { calendar },
         isLoading,
         isError,
+        retry,
     } = useDataApi('/api/calendar', { calendar: null });
 
-    if (isError) return <LoadingCalendar />;
-    if (isLoading || !calendar) return <LoadingCalendar />;
+    if (isError) return <EmptyCalendar render={<CardWithError onClick={retry} />} />;
+    if (isLoading || !calendar) return <EmptyCalendar render={<CardWithLoading />} />;
 
     return calendar.map((talk, index) => <Talk key={index} {...talk} />);
 };
