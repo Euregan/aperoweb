@@ -1,0 +1,20 @@
+name: ci
+
+on: [push]
+
+jobs:
+    test:
+        name: 🧪 Unit Test
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - run: npm install
+            - run: npm test
+
+    lint:
+        name: ✅ Lint
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - run: npm install
+            - run: npm run lint
