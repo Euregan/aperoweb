@@ -25,4 +25,8 @@ module.exports = withCss({
         }
         return config;
     },
+    env: {
+        USERNAME: process.env.USERNAME,
+        PASSWORD: process.env.PASSWORD,
+    },
 });
