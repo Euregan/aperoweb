@@ -27,9 +27,11 @@ NextTalkCard.propTypes = {
 
 const PlannedTalksCard = ({ talks }) => (
     <Card title="Planned talks">
-        {talks.map(talk => (
-            <div key={talk.name}>{talk.name}</div>
-        ))}
+        <ul className="talks">
+            {talks.map(({ name }) => (
+                <li key={name}>{name}</li>
+            ))}
+        </ul>
     </Card>
 );
 
