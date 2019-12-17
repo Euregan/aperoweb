@@ -18,11 +18,12 @@ const LoadingCalendar = () =>
 const NotPlanned = () => {
     const {
         data: { notPlanned },
+        isLoading,
         isError,
     } = useDataApi('/api/notPlanned', { notPlanned: null });
 
     if (isError) return <CardWithLoading />;
-    if (!notPlanned) return <CardWithLoading />;
+    if (isLoading || !notPlanned) return <CardWithLoading />;
 
     return notPlanned.map((talk, index) => <Talk key={`notplanned-${index}`} talk={talk} />);
 };
@@ -30,11 +31,12 @@ const NotPlanned = () => {
 const Calendar = () => {
     const {
         data: { calendar },
+        isLoading,
         isError,
     } = useDataApi('/api/calendar', { calendar: null });
 
     if (isError) return <LoadingCalendar />;
-    if (!calendar) return <LoadingCalendar />;
+    if (isLoading || !calendar) return <LoadingCalendar />;
 
     return calendar.map((talk, index) => <Talk key={index} talk={talk} />);
 };

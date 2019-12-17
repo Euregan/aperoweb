@@ -50,6 +50,7 @@ EmptyMonthCard.propTypes = {
 const Talks = () => {
     const {
         data: { nextTalk, plannedTalks, nextEmptyMonth },
+        isLoading,
         isError,
     } = useDataApi('/api/talks', {
         nextTalk: null,
@@ -58,7 +59,7 @@ const Talks = () => {
     });
 
     if (isError) return <CardWithLoading />;
-    if (!nextTalk || !plannedTalks || !nextEmptyMonth) {
+    if (isLoading || !nextTalk || !plannedTalks || !nextEmptyMonth) {
         return (
             <React.Fragment>
                 <CardWithLoading title="Next talk" />
@@ -80,13 +81,14 @@ const Talks = () => {
 const Communication = () => {
     const {
         data: { nextTweet },
+        isLoading,
         isError,
     } = useDataApi('/api/communication', {
         nextTweet: null,
     });
 
     if (isError) return <CardWithLoading title="Next tweet" />;
-    if (!nextTweet) return <CardWithLoading title="Next tweet" />;
+    if (isLoading || !nextTweet) return <CardWithLoading title="Next tweet" />;
 
     if (!nextTweet.date) {
         return (
