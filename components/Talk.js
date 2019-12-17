@@ -4,22 +4,22 @@ import { format } from 'date-fns';
 
 import Card from './Card';
 
-const Talk = ({ talk }) => {
-    if (!talk.name) {
+const Talk = ({ name, date, speakers }) => {
+    if (!name) {
         return (
-            <Card className="talk" title={format(new Date(talk.date), 'MMMM')} state="pending">
+            <Card className="talk" title={format(new Date(date), 'MMMM')} state="pending">
                 Pending
             </Card>
         );
     }
 
-    if (talk.date) {
+    if (date) {
         return (
-            <Card className="talk" title={format(new Date(talk.date), 'MMMM')} state="valid">
-                <div className="date">{format(new Date(talk.date), 'EEEE dd')}</div>
-                <div className="name">{talk.name}</div>
+            <Card className="talk" title={format(new Date(date), 'MMMM')} state="valid">
+                <div className="date">{format(new Date(date), 'EEEE dd')}</div>
+                <div className="name">{name}</div>
                 <ul className="speakers">
-                    {talk.speakers.map(({ name }) => (
+                    {speakers.map(({ name }) => (
                         <li key={name}>{name}</li>
                     ))}
                 </ul>
@@ -28,9 +28,9 @@ const Talk = ({ talk }) => {
     }
 
     return (
-        <Card className="talk" title={talk.name} state="pending">
+        <Card className="talk" title={name} state="pending">
             <ul className="speakers">
-                {talk.speakers.map(({ name }) => (
+                {speakers.map(({ name }) => (
                     <li key={name}>{name}</li>
                 ))}
             </ul>
@@ -39,15 +39,13 @@ const Talk = ({ talk }) => {
 };
 
 Talk.propTypes = {
-    talk: PropTypes.shape({
-        name: PropTypes.string,
-        date: PropTypes.string,
-        speakers: PropTypes.arrayOf(
-            PropTypes.shape({
-                name: PropTypes.string.isRequired,
-            }).isRequired,
-        ),
-    }).isRequired,
+    name: PropTypes.string,
+    date: PropTypes.string,
+    speakers: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+        }).isRequired,
+    ),
 };
 
 export default Talk;

@@ -2,7 +2,7 @@ import { isSameMonth, addMonths, subMonths } from 'date-fns';
 
 import { getTalks } from '../../lib/airtable';
 
-const getNextEmptyMonth = talks => {
+export const getNextEmptyMonth = talks => {
     const lastTalkDate = talks
         .filter(talk => talk && talk.date)
         .reduce((lastMonth, talk) => {
