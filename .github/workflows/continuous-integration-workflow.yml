@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
     test:
-        name: 🧪 Unit Test
+        name: ✅ Unit Test
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
@@ -12,7 +12,7 @@ jobs:
             - run: npm test
 
     lint:
-        name: ✅ Lint
+        name: 🚨 Lint
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
