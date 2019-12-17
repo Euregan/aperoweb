@@ -55,14 +55,14 @@ CardWithLoading.defaultProps = {
     title: '',
 };
 
-export const CardWithError = ({ title, onClick }) => (
+export const CardWithError = ({ title, onFailureRetry }) => (
     <AntCard
         title={title}
         extra={
             title ? <Icon type="close-circle" theme="twoTone" twoToneColor={red.primary} /> : null
         }
         actions={[
-            <Button key="antCard-dangerAction" type="danger" onClick={onClick}>
+            <Button key="antCard-dangerAction" type="danger" onClick={onFailureRetry}>
                 Try Again
             </Button>,
         ]}
@@ -73,10 +73,10 @@ export const CardWithError = ({ title, onClick }) => (
 
 CardWithError.propTypes = {
     title: PropTypes.string,
-    onClick: PropTypes.func,
+    onFailureRetry: PropTypes.func,
 };
 
 CardWithError.defaultProps = {
     title: '',
-    onClick: () => {},
+    onFailureRetry: () => {},
 };

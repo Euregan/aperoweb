@@ -62,9 +62,9 @@ const Talks = () => {
     if (isError) {
         return (
             <React.Fragment>
-                <CardWithError title="Next talk" onClick={retry} />
-                <CardWithError title="Planned talks" onClick={retry} />
-                <CardWithError title="Next empty month" onClick={retry} />
+                <CardWithError title="Next talk" onFailureRetry={retry} />
+                <CardWithError title="Planned talks" onFailureRetry={retry} />
+                <CardWithError title="Next empty month" onFailureRetry={retry} />
             </React.Fragment>
         );
     }
@@ -98,7 +98,7 @@ const Communication = () => {
         nextTweet: null,
     });
 
-    if (isError) return <CardWithError title="Next tweet" onClick={retry} />;
+    if (isError) return <CardWithError title="Next tweet" onFailureRetry={retry} />;
     if (isLoading || !nextTweet) return <CardWithLoading title="Next tweet" />;
 
     if (!nextTweet.date) {
