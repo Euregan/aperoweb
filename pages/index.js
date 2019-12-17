@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { formatDistance, format } from 'date-fns';
+import { Col, Row } from 'antd';
 
 import useDataApi from '../lib/useDataApi';
 import Layout from '../components/Layout';
 import Card, { CardWithLoading, CardWithError } from '../components/Card';
-import Grid from '../components/Grid';
 
 const NextTalkCard = ({ date, name, speakers }) => (
     <Card title="Next talk">
@@ -81,9 +81,15 @@ const Talks = () => {
 
     return (
         <React.Fragment>
-            <NextTalkCard {...nextTalk} />
-            <PlannedTalksCard talks={plannedTalks} />
-            <EmptyMonthCard date={nextEmptyMonth} />
+            <Col xs={2} sm={4} md={6} lg={8} xl={10}>
+                <NextTalkCard {...nextTalk} />
+            </Col>
+            <Col span={8}>
+                <PlannedTalksCard talks={plannedTalks} />
+            </Col>
+            <Col span={8}>
+                <EmptyMonthCard date={nextEmptyMonth} />
+            </Col>
         </React.Fragment>
     );
 };
@@ -120,13 +126,15 @@ const Communication = () => {
 const Home = () => (
     <Layout>
         <h2>Talks</h2>
-        <Grid>
+        <Row gutter={16}>
             <Talks />
-        </Grid>
+        </Row>
         <h2>Communication</h2>
-        <Grid>
-            <Communication />
-        </Grid>
+        <Row>
+            <Col>
+                <Communication />
+            </Col>
+        </Row>
     </Layout>
 );
 

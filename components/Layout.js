@@ -14,39 +14,26 @@ const CustomLayout = ({ children }) => (
             <link rel="icon" href="/favicon.ico" />
 
             <style>{`
-        .ant-layout-content {
-          padding: 0 2rem !important;
-        }
+            body {
+                background-color: #f0f2f5 !important;
+            }
 
-        .ant-layout-header {
-          height: auto !important;
-          padding: 0 !important;
-        }
+            h2 {
+             margin-top: 1rem !important;
+            }
 
-        .ant-card .ant-card-body > * ~ * {
-          margin-top: 0.5rem;
-        }
-
-        h2 {
-          margin-top: 1rem !important;
-        }
-
-        ul {
-          list-style: none;
-          padding: 0;
-        }
-
-        body {
-          background-color: #f0f2f5 !important;
-        }
-      `}</style>
+            ul {
+                list-style: none;
+                padding: 0;
+            }
+            `}</style>
         </Head>
 
         <Layout>
-            <Header>
+            <Header style={{ height: 'auto', padding: 0 }}>
                 <Nav />
             </Header>
-            <Content>{children}</Content>
+            <Content style={{ padding: '0 2rem' }}>{children}</Content>
         </Layout>
     </div>
 );
