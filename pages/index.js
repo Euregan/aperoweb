@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { formatDistance, format } from 'date-fns';
-import { Col, Row } from 'antd';
+import { Typography, Col, Row } from 'antd';
 
 import useDataApi from '../lib/useDataApi';
 import Layout from '../components/Layout';
 import Card, { CardWithLoading, CardWithError } from '../components/Card';
+
+const { Title } = Typography;
 
 const NextTalkCard = ({ date, name, speakers }) => (
     <Card title="Next talk">
@@ -72,22 +74,28 @@ const Talks = () => {
     if (isLoading || !nextTalk || !plannedTalks || !nextEmptyMonth) {
         return (
             <React.Fragment>
-                <CardWithLoading title="Next talk" />
-                <CardWithLoading title="Planned talks" />
-                <CardWithLoading title="Next empty month" />
+                <Col>
+                    <CardWithLoading title="Next talk" />
+                </Col>
+                <Col>
+                    <CardWithLoading title="Planned talks" />
+                </Col>
+                <Col>
+                    <CardWithLoading title="Next empty month" />
+                </Col>
             </React.Fragment>
         );
     }
 
     return (
         <React.Fragment>
-            <Col xs={2} sm={4} md={6} lg={8} xl={10}>
+            <Col>
                 <NextTalkCard {...nextTalk} />
             </Col>
-            <Col span={8}>
+            <Col>
                 <PlannedTalksCard talks={plannedTalks} />
             </Col>
-            <Col span={8}>
+            <Col>
                 <EmptyMonthCard date={nextEmptyMonth} />
             </Col>
         </React.Fragment>
@@ -125,11 +133,11 @@ const Communication = () => {
 
 const Home = () => (
     <Layout>
-        <h2>Talks</h2>
-        <Row gutter={16}>
+        <Title level={3}>Talks</Title>
+        <Row type="flex" gutter={[16, 16]}>
             <Talks />
         </Row>
-        <h2>Communication</h2>
+        <Title level={3}>Communication</Title>
         <Row>
             <Col>
                 <Communication />

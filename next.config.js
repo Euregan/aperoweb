@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const themeVariables = lessToJS(
-    fs.readFileSync(path.resolve(__dirname, './assets/aperoweb.less'), 'utf8'),
+    fs.readFileSync(path.resolve(__dirname, './assets/antd-aperoweb.less'), 'utf8'),
 );
 
 module.exports = withLess({

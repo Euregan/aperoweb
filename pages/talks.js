@@ -1,17 +1,19 @@
 import React from 'react';
+import { Typography, Row, Col } from 'antd';
 
 import useDataApi from '../lib/useDataApi';
 import Layout from '../components/Layout';
 import Talk from '../components/Talk';
 import { CardWithLoading, CardWithError } from '../components/Card';
-import Grid from '../components/Grid';
+
+const { Title } = Typography;
 
 const EmptyCalendar = ({ component }) =>
     [...Array(6).keys()]
-        .map((_, index) => <React.Fragment key={index}>{component}</React.Fragment>)
+        .map((_, index) => <Col key={`CardWithLoading${index}`}>{component}</Col>)
         .concat(
             [...Array(6).keys()].map((_, index) => (
-                <React.Fragment key={index}>{component}</React.Fragment>
+                <Col key={`CardWithLoadingConcat${index}`}>{component}</Col>
             )),
         );
 
@@ -26,7 +28,11 @@ const NotPlanned = () => {
     if (isError) return <CardWithError onFailureRetry={retry} />;
     if (isLoading || !notPlanned) return <CardWithLoading />;
 
-    return notPlanned.map((talk, index) => <Talk key={`notplanned-${index}`} {...talk} />);
+    return notPlanned.map((talk, index) => (
+        <Col key={`notplanned-${index}`}>
+            <Talk {...talk} />
+        </Col>
+    ));
 };
 
 const Calendar = () => {
@@ -40,19 +46,23 @@ const Calendar = () => {
     if (isError) return <EmptyCalendar component={<CardWithError onFailureRetry={retry} />} />;
     if (isLoading || !calendar) return <EmptyCalendar component={<CardWithLoading />} />;
 
-    return calendar.map((talk, index) => <Talk key={index} {...talk} />);
+    return calendar.map((talk, index) => (
+        <Col key={index}>
+            <Talk {...talk} />
+        </Col>
+    ));
 };
 
 const Talks = () => (
     <Layout>
-        <h2>Calendar</h2>
-        <Grid>
+        <Title level={3}>Calendar</Title>
+        <Row type="flex" gutter={[16, 16]}>
             <Calendar />
-        </Grid>
-        <h2>Not planned</h2>
-        <Grid>
+        </Row>
+        <Title level={3}>Not planned</Title>
+        <Row type="flex" gutter={[16, 16]}>
             <NotPlanned />
-        </Grid>
+        </Row>
     </Layout>
 );
 

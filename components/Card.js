@@ -25,7 +25,7 @@ const Card = ({ title, state, className, children }) => {
     );
 
     return (
-        <AntCard title={title} className={className} extra={extra} style={{ width: 300 }}>
+        <AntCard title={title} className={className} extra={extra}>
             {children}
         </AntCard>
     );
@@ -45,9 +45,7 @@ Card.defaultProps = {
 
 export default Card;
 
-export const CardWithLoading = ({ title }) => (
-    <AntCard title={title} loading={true} style={{ width: 300 }}></AntCard>
-);
+export const CardWithLoading = ({ title }) => <AntCard title={title} loading={true}></AntCard>;
 
 CardWithLoading.propTypes = {
     title: PropTypes.string,
