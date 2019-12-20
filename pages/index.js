@@ -4,7 +4,7 @@ import { formatDistance, format } from 'date-fns';
 
 import useDataApi from '../lib/useDataApi';
 import Layout from '../components/Layout';
-import Card, { CardWithLoading } from '../components/Card';
+import Card, { CardWithLoading, CardWithError } from '../components/Card';
 import Grid from '../components/Grid';
 
 const NextTalkCard = ({ date, name, speakers }) => (
@@ -52,13 +52,23 @@ const Talks = () => {
         data: { nextTalk, plannedTalks, nextEmptyMonth },
         isLoading,
         isError,
+        retry,
     } = useDataApi('/api/talks', {
         nextTalk: null,
         plannedTalks: null,
         nextEmptyMonth: null,
     });
 
-    if (isError) return <CardWithLoading />;
+    if (isError) {
+        return (
+            <React.Fragment>
+                <CardWithError title="Next talk" onFailureRetry={retry} />
+                <CardWithError title="Planned talks" onFailureRetry={retry} />
+                <CardWithError title="Next empty month" onFailureRetry={retry} />
+            </React.Fragment>
+        );
+    }
+
     if (isLoading || !nextTalk || !plannedTalks || !nextEmptyMonth) {
         return (
             <React.Fragment>
@@ -83,11 +93,12 @@ const Communication = () => {
         data: { nextTweet },
         isLoading,
         isError,
+        retry,
     } = useDataApi('/api/communication', {
         nextTweet: null,
     });
 
-    if (isError) return <CardWithLoading title="Next tweet" />;
+    if (isError) return <CardWithError title="Next tweet" onFailureRetry={retry} />;
     if (isLoading || !nextTweet) return <CardWithLoading title="Next tweet" />;
 
     if (!nextTweet.date) {
