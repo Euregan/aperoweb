@@ -4,7 +4,8 @@
     },
     "build": {
         "env": {
-            "AIRTABLE_TOKEN": "@airtable_token"
+            "USERNAME": "@apero_web_username",
+            "PASSWORD": "@apero_web_password"
         }
     }
 }

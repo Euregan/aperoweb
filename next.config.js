@@ -26,6 +26,7 @@ module.exports = withCss({
         return config;
     },
     env: {
-        AIRTABLE_TOKEN: process.env.AIRTABLE_TOKEN,
+        USERNAME: process.env.USERNAME,
+        PASSWORD: process.env.PASSWORD,
     },
 });
