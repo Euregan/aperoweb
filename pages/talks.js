@@ -58,7 +58,7 @@ const Talks = () => (
 );
 
 Talks.getInitialProps = async ({ req, res }) => {
-    const securitySettings = useAuthentication(req, res);
+    const securitySettings = useAuthentication(req, res); // eslint-disable-line react-hooks/rules-of-hooks
     return securitySettings;
 };
 
