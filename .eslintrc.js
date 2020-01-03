@@ -1,10 +1,18 @@
 module.exports = {
     env: {
         browser: true,
-        es6: true,
+        es2020: true,
         node: true,
         'jest/globals': true,
     },
+    parserOptions: {
+        ecmaFeatures: {
+            jsx: true,
+        },
+        ecmaVersion: 2020,
+        sourceType: 'module',
+    },
+    plugins: ['react', 'react-hooks'],
     extends: [
         'eslint:recommended',
         'plugin:prettier/recommended',
@@ -14,15 +22,8 @@ module.exports = {
         'plugin:jest/recommended',
         'plugin:jest/style',
     ],
-    parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
-        },
-        ecmaVersion: 2018,
-        sourceType: 'module',
-    },
-    plugins: ['react', 'react-hooks'],
     rules: {
+        'prettier/prettier': 'error',
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'warn',
     },
