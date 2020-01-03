@@ -103,7 +103,7 @@ const Talks = () => {
     );
 };
 
-const Communication = () => {
+const NextTweet = () => {
     const {
         data: { nextTweet },
         isLoading,
@@ -132,6 +132,32 @@ const Communication = () => {
     );
 };
 
+const NoCommunication = () => {
+    const {
+        data: { plannedTalks },
+        isLoading,
+        isError,
+        retry,
+    } = useDataApi('/api/talks', {
+        nextTweet: null,
+    });
+
+    if (isError) return <CardWithError title="No communication" onFailureRetry={retry} />;
+    if (isLoading || !plannedTalks) return <CardWithLoading title="No communication" />;
+
+    return (
+        <Card title="No communication">
+            <ul>
+                {plannedTalks
+                    .filter(plannedTalk => plannedTalk.tweets && plannedTalk.tweets.length)
+                    .map(plannedTalk => (
+                        <li key={plannedTalk.name}>{plannedTalk.name}</li>
+                    ))}
+            </ul>
+        </Card>
+    );
+};
+
 const Home = () => (
     <Layout>
         <Title level={3}>Talks</Title>
@@ -139,9 +165,12 @@ const Home = () => (
             <Talks />
         </Row>
         <Title level={3}>Communication</Title>
-        <Row>
+        <Row type="flex" gutter={[16, 16]}>
             <Col>
-                <Communication />
+                <NextTweet />
+            </Col>
+            <Col>
+                <NoCommunication />
             </Col>
         </Row>
     </Layout>
