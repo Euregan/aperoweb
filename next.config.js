@@ -1,10 +1,21 @@
 require('dotenv').config();
-const withCss = require('@zeit/next-css');
+const withLess = require('@zeit/next-less');
+const lessToJS = require('less-vars-to-js');
+const fs = require('fs');
+const path = require('path');
 
-module.exports = withCss({
+const themeVariables = lessToJS(
+    fs.readFileSync(path.resolve(__dirname, './assets/antd-aperoweb.less'), 'utf8'),
+);
+
+module.exports = withLess({
+    lessLoaderOptions: {
+        javascriptEnabled: true,
+        modifyVars: themeVariables,
+    },
     webpack: (config, { isServer }) => {
         if (isServer) {
-            const antStyles = /antd\/.*?\/style\/css.*?/;
+            const antStyles = /antd\/.*?\/style.*?/;
             const origExternals = [...config.externals];
             config.externals = [
                 (context, request, callback) => {

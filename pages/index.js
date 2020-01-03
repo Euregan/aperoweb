@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { formatDistance, format } from 'date-fns';
+import { Typography, Col, Row } from 'antd';
 
 import useDataApi from '../lib/useDataApi';
 import useAuthentication from '../lib/useAuthentication';
 import Layout from '../components/Layout';
 import Card, { CardWithLoading, CardWithError } from '../components/Card';
-import Grid from '../components/Grid';
+
+const { Title } = Typography;
 
 const NextTalkCard = ({ date, name, speakers }) => (
     <Card title="Next talk">
@@ -73,18 +75,30 @@ const Talks = () => {
     if (isLoading || !nextTalk || !plannedTalks || !nextEmptyMonth) {
         return (
             <React.Fragment>
-                <CardWithLoading title="Next talk" />
-                <CardWithLoading title="Planned talks" />
-                <CardWithLoading title="Next empty month" />
+                <Col>
+                    <CardWithLoading title="Next talk" />
+                </Col>
+                <Col>
+                    <CardWithLoading title="Planned talks" />
+                </Col>
+                <Col>
+                    <CardWithLoading title="Next empty month" />
+                </Col>
             </React.Fragment>
         );
     }
 
     return (
         <React.Fragment>
-            <NextTalkCard {...nextTalk} />
-            <PlannedTalksCard talks={plannedTalks} />
-            <EmptyMonthCard date={nextEmptyMonth} />
+            <Col>
+                <NextTalkCard {...nextTalk} />
+            </Col>
+            <Col>
+                <PlannedTalksCard talks={plannedTalks} />
+            </Col>
+            <Col>
+                <EmptyMonthCard date={nextEmptyMonth} />
+            </Col>
         </React.Fragment>
     );
 };
@@ -120,14 +134,16 @@ const Communication = () => {
 
 const Home = () => (
     <Layout>
-        <h2>Talks</h2>
-        <Grid>
+        <Title level={3}>Talks</Title>
+        <Row type="flex" gutter={[16, 16]}>
             <Talks />
-        </Grid>
-        <h2>Communication</h2>
-        <Grid>
-            <Communication />
-        </Grid>
+        </Row>
+        <Title level={3}>Communication</Title>
+        <Row>
+            <Col>
+                <Communication />
+            </Col>
+        </Row>
     </Layout>
 );
 
