@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Row, Col } from 'antd';
 
 import useDataApi from '../lib/useDataApi';
-import useAuthentication from '../lib/useAuthentication';
+import provideAuthentication from '../lib/provideAuthentication';
 import Layout from '../components/Layout';
 import Talk from '../components/Talk';
 import { CardWithLoading, CardWithError } from '../components/Card';
@@ -68,7 +68,7 @@ const Talks = () => (
 );
 
 Talks.getInitialProps = async ({ req, res }) => {
-    const securitySettings = useAuthentication(req, res); // eslint-disable-line react-hooks/rules-of-hooks
+    const securitySettings = provideAuthentication(req, res);
     return securitySettings;
 };
 

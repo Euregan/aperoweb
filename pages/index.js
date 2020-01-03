@@ -4,7 +4,7 @@ import { formatDistance, format } from 'date-fns';
 import { Typography, Col, Row } from 'antd';
 
 import useDataApi from '../lib/useDataApi';
-import useAuthentication from '../lib/useAuthentication';
+import provideAuthentication from '../lib/provideAuthentication';
 import Layout from '../components/Layout';
 import Card, { CardWithLoading, CardWithError } from '../components/Card';
 
@@ -148,7 +148,7 @@ const Home = () => (
 );
 
 Home.getInitialProps = async ({ req, res }) => {
-    const securitySettings = useAuthentication(req, res); // eslint-disable-line react-hooks/rules-of-hooks
+    const securitySettings = provideAuthentication(req, res);
     return securitySettings;
 };
 
