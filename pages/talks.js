@@ -24,10 +24,10 @@ const NotPlanned = () => {
         isLoading,
         isError,
         retry,
-    } = useDataApi('/api/notPlanned', { notPlanned: null });
+    } = useDataApi('/api/notPlanned');
 
     if (isError) return <CardWithError onFailureRetry={retry} />;
-    if (isLoading || !notPlanned) return <CardWithLoading />;
+    if (isLoading) return <CardWithLoading />;
 
     return notPlanned.map((talk, index) => (
         <Col key={`notplanned-${index}`}>
@@ -42,10 +42,10 @@ const Calendar = () => {
         isLoading,
         isError,
         retry,
-    } = useDataApi('/api/calendar', { calendar: null });
+    } = useDataApi('/api/calendar');
 
     if (isError) return <EmptyCalendar component={<CardWithError onFailureRetry={retry} />} />;
-    if (isLoading || !calendar) return <EmptyCalendar component={<CardWithLoading />} />;
+    if (isLoading) return <EmptyCalendar component={<CardWithLoading />} />;
 
     return calendar.map((talk, index) => (
         <Col key={index}>
