@@ -6,19 +6,23 @@ import { Typography, Col, Row } from 'antd';
 import useDataApi from '../lib/useDataApi';
 import provideAuthentication from '../lib/provideAuthentication';
 import Layout from '../components/Layout';
-import Card, { CardWithLoading, CardWithError } from '../components/Card';
+import Card, { CardWithNetwork } from '../components/Card';
 
 const { Title } = Typography;
 
-const NextTalkCard = ({ date, name, speakers }) => (
-    <Card title="Next talk">
-        <div>{formatDistance(new Date(date), new Date())}</div>
-        <div>{name}</div>
-        <ul>
-            {speakers.map(({ name }) => (
-                <li key={name}>{name}</li>
-            ))}
-        </ul>
+const NextTalkCard = ({ date, name, speakers, requestState }) => (
+    <Card title="Next talk" requestState={requestState}>
+        {requestState.ifLoaded(() => (
+            <>
+                <div>{formatDistance(new Date(date), new Date())}</div>
+                <div>{name}</div>
+                <ul>
+                    {speakers.map(({ name }) => (
+                        <li key={name}>{name}</li>
+                    ))}
+                </ul>
+            </>
+        ))}
     </Card>
 );
 
@@ -26,129 +30,92 @@ NextTalkCard.propTypes = {
     date: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     speakers: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })).isRequired,
+    requestState: PropTypes.shape({ ifLoaded: PropTypes.func }),
 };
 
-const PlannedTalksCard = ({ talks }) => (
-    <Card title="Planned talks">
-        <ul className="talks">
-            {talks.map(({ name }) => (
-                <li key={name}>{name}</li>
-            ))}
-        </ul>
+const PlannedTalksCard = ({ talks, requestState }) => (
+    <Card title="Planned talks" requestState={requestState}>
+        {requestState.ifLoaded(() => (
+            <ul className="talks">
+                {talks.map(({ name }) => (
+                    <li key={name}>{name}</li>
+                ))}
+            </ul>
+        ))}
     </Card>
 );
 
 PlannedTalksCard.propTypes = {
     talks: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })).isRequired,
+    requestState: PropTypes.shape({ ifLoaded: PropTypes.func }),
 };
 
-const EmptyMonthCard = ({ date }) => (
-    <Card title="Next empty month">{format(new Date(date), 'MMMM')}</Card>
+const EmptyMonthCard = ({ date, requestState }) => (
+    <Card title="Next empty month" requestState={requestState}>
+        {requestState.ifLoaded(() => format(new Date(date), 'MMMM'))}
+    </Card>
 );
 
 EmptyMonthCard.propTypes = {
     date: PropTypes.string.isRequired,
+    requestState: PropTypes.shape({ ifLoaded: PropTypes.func }),
 };
 
 const Talks = () => {
-    const {
-        data: { nextTalk, plannedTalks, nextEmptyMonth },
-        isLoading,
-        isError,
-        retry,
-    } = useDataApi('/api/talks');
-
-    if (isError) {
-        return (
-            <React.Fragment>
-                <CardWithError title="Next talk" onFailureRetry={retry} />
-                <CardWithError title="Planned talks" onFailureRetry={retry} />
-                <CardWithError title="Next empty month" onFailureRetry={retry} />
-            </React.Fragment>
-        );
-    }
-
-    if (isLoading) {
-        return (
-            <React.Fragment>
-                <Col>
-                    <CardWithLoading title="Next talk" />
-                </Col>
-                <Col>
-                    <CardWithLoading title="Planned talks" />
-                </Col>
-                <Col>
-                    <CardWithLoading title="Next empty month" />
-                </Col>
-            </React.Fragment>
-        );
-    }
+    const requestState = useDataApi('/api/talks');
+    const { nextTalk, plannedTalks, nextEmptyMonth } = requestState.data;
 
     return (
         <React.Fragment>
             <Col>
-                <NextTalkCard {...nextTalk} />
+                <NextTalkCard {...nextTalk} requestState={requestState} />
             </Col>
             <Col>
-                <PlannedTalksCard talks={plannedTalks} />
+                <PlannedTalksCard talks={plannedTalks} requestState={requestState} />
             </Col>
             <Col>
-                <EmptyMonthCard date={nextEmptyMonth} />
+                <EmptyMonthCard date={nextEmptyMonth} requestState={requestState} />
             </Col>
         </React.Fragment>
     );
 };
 
 const NextTweet = () => {
-    const {
-        data: { nextTweet },
-        isLoading,
-        isError,
-        retry,
-    } = useDataApi('/api/communication');
-
-    if (isError) return <CardWithError title="Next tweet" onFailureRetry={retry} />;
-    if (isLoading) return <CardWithLoading title="Next tweet" />;
-
-    if (!nextTweet.date) {
-        return (
-            <Card title="Next tweet" state="error">
-                <div>No tweet has been prepared!</div>
-            </Card>
-        );
-    }
+    const requestState = useDataApi('/api/communication');
+    const nextTweet = requestState.data.nextTweet;
 
     return (
-        <Card title="Next tweet" state="error">
-            <div>{formatDistance(new Date(nextTweet.date), new Date())}</div>
-            <div>{nextTweet.talk.name}</div>
-        </Card>
+        <CardWithNetwork title="Next tweet" state="error" requestState={requestState}>
+            {requestState.ifLoaded(() => {
+                return nextTweet && nextTweet.date ? (
+                    <>
+                        <div>{formatDistance(new Date(nextTweet.date), new Date())}</div>
+                        <div>{nextTweet.talk.name}</div>
+                    </>
+                ) : (
+                    <div>No tweet has been prepared!</div>
+                );
+            })}
+        </CardWithNetwork>
     );
 };
 
 const NoCommunication = () => {
-    const {
-        data: { plannedTalks },
-        isLoading,
-        isError,
-        retry,
-    } = useDataApi('/api/talks', {
-        nextTweet: null,
-    });
-
-    if (isError) return <CardWithError title="No communication" onFailureRetry={retry} />;
-    if (isLoading || !plannedTalks) return <CardWithLoading title="No communication" />;
+    const requestState = useDataApi('/api/talks');
+    const plannedTalks = requestState.data.plannedTalks;
 
     return (
-        <Card title="No communication">
-            <ul>
-                {plannedTalks
-                    .filter(plannedTalk => plannedTalk.tweets && plannedTalk.tweets.length)
-                    .map(plannedTalk => (
-                        <li key={plannedTalk.name}>{plannedTalk.name}</li>
-                    ))}
-            </ul>
-        </Card>
+        <CardWithNetwork title="communication" requestState={requestState}>
+            {requestState.ifLoaded(() => {
+                <ul>
+                    {plannedTalks
+                        .filter(plannedTalk => plannedTalk.tweets && plannedTalk.tweets.length)
+                        .map(plannedTalk => (
+                            <li key={plannedTalk.name}>{plannedTalk.name}</li>
+                        ))}
+                </ul>;
+            })}
+        </CardWithNetwork>
     );
 };
 
