@@ -56,11 +56,7 @@ const Talks = () => {
         isLoading,
         isError,
         retry,
-    } = useDataApi('/api/talks', {
-        nextTalk: null,
-        plannedTalks: null,
-        nextEmptyMonth: null,
-    });
+    } = useDataApi('/api/talks');
 
     if (isError) {
         return (
@@ -72,7 +68,7 @@ const Talks = () => {
         );
     }
 
-    if (isLoading || !nextTalk || !plannedTalks || !nextEmptyMonth) {
+    if (isLoading) {
         return (
             <React.Fragment>
                 <Col>
@@ -109,12 +105,10 @@ const Communication = () => {
         isLoading,
         isError,
         retry,
-    } = useDataApi('/api/communication', {
-        nextTweet: null,
-    });
+    } = useDataApi('/api/communication');
 
     if (isError) return <CardWithError title="Next tweet" onFailureRetry={retry} />;
-    if (isLoading || !nextTweet) return <CardWithLoading title="Next tweet" />;
+    if (isLoading) return <CardWithLoading title="Next tweet" />;
 
     if (!nextTweet.date) {
         return (
