@@ -45,6 +45,41 @@ Card.defaultProps = {
 
 export default Card;
 
+export const CardWithNetwork = ({ title, state, className, children, requestState }) => {
+    if (requestState.isLoading) {
+        return <CardWithLoading title={title} state={state} className={className} />;
+    }
+
+    if (requestState.isFailure) {
+        return (
+            <CardWithError
+                title={title}
+                state={state}
+                className={className}
+                onFailureRetry={requestState.retry}
+            />
+        );
+    }
+
+    return (
+        <Card title={title} state={state} className={className}>
+            {children}
+        </Card>
+    );
+};
+
+CardWithNetwork.propTypes = {
+    title: PropTypes.string,
+    state: PropTypes.string,
+    className: PropTypes.string,
+    children: PropTypes.node.isRequired,
+    requestState: PropTypes.shape({
+        isLoading: PropTypes.func,
+        isFailure: PropTypes.func,
+        retry: PropTypes.func,
+    }),
+};
+
 export const CardWithLoading = ({ title }) => <AntCard title={title} loading={true}></AntCard>;
 
 CardWithLoading.propTypes = {
